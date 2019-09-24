@@ -1,6 +1,5 @@
-package ui;
+package testMain;
 
-import info.DebtsList;
 import info.ListOfPeople;
 import info.Person;
 import org.junit.jupiter.api.BeforeEach;

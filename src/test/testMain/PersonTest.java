@@ -1,4 +1,4 @@
-package ui;
+package testMain;
 
 import info.Person;
 import org.junit.jupiter.api.BeforeEach;

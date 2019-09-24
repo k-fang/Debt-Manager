@@ -5,7 +5,10 @@ import java.util.ArrayList;
 
 public class ListOfPeople {
     private ArrayList<Person> listOfPeople;
-    public ListOfPeople (){listOfPeople = new ArrayList<>();}
+
+    public ListOfPeople() {
+        listOfPeople = new ArrayList<>();
+    }
 
     //REQUIRES: Person
     //MODIFIES: this
@@ -13,6 +16,7 @@ public class ListOfPeople {
     public void addList(Person person) {
         listOfPeople.add(person);
     }
+
     //EFFECTS: returns listOfPeople when called
     public ArrayList<Person> returnList() {
         return listOfPeople;

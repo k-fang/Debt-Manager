@@ -9,7 +9,7 @@ public class DebtsList {
 
     public DebtsList() {
         Scanner input = new Scanner(System.in);
-        listOfPeople = new ListOfPeople ();
+        listOfPeople = new ListOfPeople();
         while (true) {
             Person person = new Person();
             System.out.println("Do you owe money or are you owed money? (Type Owe or Owed)");
@@ -41,7 +41,8 @@ public class DebtsList {
 
             }
         }
-        System.out.println (listOfPeople.returnList());
+        System.out.println(listOfPeople.returnList());
+        //;lsjkag
     }
 
     // REQUIRES: person, int amount, string either "Owe" or "Owed", String for name
@@ -51,6 +52,7 @@ public class DebtsList {
         person.setAmount(amount);
         person.setOweOrOwed(oweOrOwed);
         person.setWho(who);
+
         listOfPeople.addList(person);
     }
 
