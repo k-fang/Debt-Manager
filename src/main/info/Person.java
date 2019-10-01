@@ -1,6 +1,8 @@
 package info;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
     private int amount;
     private String oweOrOwed;
     private String who;
@@ -20,9 +22,7 @@ public class Person {
         return who;
     }
 
-    public Person() {
 
-    }
 
     //REQUIRES: int amount
     //MODIFIES: this

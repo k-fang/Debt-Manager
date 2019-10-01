@@ -9,7 +9,6 @@ public class DebtsList implements Serializable, Loadable, Saveable {
     private ArrayList<Person> listOfPeople;
     private Person person;
 
-
     public DebtsList() {
         listOfPeople = new ArrayList<>();
     }
@@ -94,6 +93,7 @@ public class DebtsList implements Serializable, Loadable, Saveable {
         pw.close();
     }*/
 
+    @Override
     public void save() throws IOException {
         FileOutputStream fos = new FileOutputStream("t.tmp");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -101,8 +101,8 @@ public class DebtsList implements Serializable, Loadable, Saveable {
         oos.close();
     }
 
+    @Override
     public void load() throws IOException, ClassNotFoundException {
-
         FileInputStream fis = new FileInputStream("t.tmp");
         ObjectInputStream ois = new ObjectInputStream(fis);
         // person = (Person) ois.readObject();
