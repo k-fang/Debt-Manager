@@ -2,10 +2,11 @@ package info;
 
 import java.io.Serializable;
 
-public class Person extends Debt implements Serializable {
-   /* private int amount;
-    private String oweOrOwed;
-    private String who;
+public abstract class Debt implements Serializable {
+
+    protected int amount;
+    protected String oweOrOwed;
+    protected String who;
 
     //EFFECTS: returns int amount of money owe or owed
     public int getAmount() {
@@ -21,7 +22,6 @@ public class Person extends Debt implements Serializable {
     public String getWho() {
         return who;
     }
-
 
 
     //REQUIRES: int amount
@@ -44,18 +44,10 @@ public class Person extends Debt implements Serializable {
     public void setWho(String who) {
         this.who = who;
     }
-*/
 
-// create something where i gotta pull out the name if someone requests it
-
-    @Override
-    protected void reminder() {
-        if (oweOrOwed.equals("Owe")) {
-            System.out.println("You owe " + who + " " + amount + " dollars.");
-        } else {
-            System.out.println(who + " owes you " + amount + " dollars.");
-        }
-    }
+    protected abstract void reminder();
 
 }
 
+// MAKE SOMETHING TODAY THAT WHEN CALLED RETURNS FOR PERSON, OWED THIS AMOUNT
+// BUT FOR URGENT PERSON SAY OWED THIS AMOUNT BY DATE

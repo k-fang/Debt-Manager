@@ -1,10 +1,10 @@
 package ui;
 
+import info.Debt;
 import info.DebtsList;
 import info.Person;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Input {
@@ -35,7 +35,7 @@ public class Input {
             }
         }
         debtsList.save();
-        for (Person person : debtsList.getListOfPeople()) {
+        for (Debt person : debtsList.getListOfDebt()) {
             System.out.println(person.getWho());
             System.out.println(person.getOweOrOwed());
             System.out.println(person.getAmount());

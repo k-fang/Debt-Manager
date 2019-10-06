@@ -2,13 +2,14 @@ package info;
 
 import java.io.Serializable;
 
-public class UrgentPerson implements Serializable {
+public class UrgentPerson extends Debt implements Serializable {
+    /*
     private int amount;
     private String oweOrOwed;
-    private String who;
+    private String who;*/
     private String dueDate;
 
-    //EFFECTS: returns int amount of money owe or owed
+  /*  //EFFECTS: returns int amount of money owe or owed
     public int getAmount() {
         return amount;
     }
@@ -21,14 +22,14 @@ public class UrgentPerson implements Serializable {
     //EFFECTS: returns name of person in list
     public String getWho() {
         return who;
-    }
+    }*/
 
     //EFFECTS: returns due date
     public String getDueDate() {
         return dueDate;
     }
 
-    //REQUIRES: int amount
+   /* //REQUIRES: int amount
     //MODIFIES: this
     //EFFECTS: sets amount to the passed parameter from user
     public void setAmount(int amount) {
@@ -48,12 +49,21 @@ public class UrgentPerson implements Serializable {
     public void setWho(String who) {
         this.who = who;
     }
-
+*/
     //REQUIRES: String
     //MODIFIES: this
     //EFFECTS: sets duedate to user input
     public void setDueDate(String dueDate) {
-        this.dueDate = who;
+        this.dueDate = dueDate;
+    }
+
+    @Override
+    protected void reminder() {
+        if (oweOrOwed.equals("Owe")) {
+            System.out.println("You owe " + who + " " + amount + " dollars by " + dueDate);
+        } else {
+            System.out.println(who + " owes you " + amount + " dollars by " + dueDate);
+        }
     }
 
 // create something where i gotta pull out the name if someone requests it

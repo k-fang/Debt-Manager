@@ -2,21 +2,20 @@ package info;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class DebtsList implements Serializable, Loadable, Saveable {
 
-    private ArrayList<Person> listOfPeople;
+    private ArrayList<Debt> listOfDebt;
     private Person person;
 
     public DebtsList() {
-        listOfPeople = new ArrayList<>();
+        listOfDebt = new ArrayList<>();
     }
 
     // REQUIRES: Person, int amount, string either "Owe" or "Owed", String for name
     // MODIFIES: this
     // EFFECTS: sets passed parameters to Person person
-    public void logResult(Person person, int amount, String oweOrOwed, String who) {
+    public void logResult(Debt person, int amount, String oweOrOwed, String who) {
         person.setAmount(amount);
         person.setOweOrOwed(oweOrOwed);
         person.setWho(who);
@@ -27,13 +26,13 @@ public class DebtsList implements Serializable, Loadable, Saveable {
     // REQUIRES: Person
     // MODIFIES: this
     // EFFECTS: adds a new person to listOfPeople
-    public void addList(Person person) {
-        listOfPeople.add(person);
+    public void addList(Debt person) {
+        listOfDebt.add(person);
     }
 
     //EFFECTS: returns listOfPeople
-    public ArrayList<Person> getListOfPeople() {
-        return listOfPeople;
+    public ArrayList<Debt> getListOfDebt() {
+        return listOfDebt;
     }
 
 
@@ -53,7 +52,7 @@ public class DebtsList implements Serializable, Loadable, Saveable {
     public void save() throws IOException {
         FileOutputStream fos = new FileOutputStream("t.tmp");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(listOfPeople);
+        oos.writeObject(listOfDebt);
         oos.close();
     }
 
@@ -62,7 +61,7 @@ public class DebtsList implements Serializable, Loadable, Saveable {
         FileInputStream fis = new FileInputStream("t.tmp");
         ObjectInputStream ois = new ObjectInputStream(fis);
         // person = (Person) ois.readObject();
-        listOfPeople = (ArrayList<Person>) ois.readObject();
+        listOfDebt = (ArrayList<Debt>) ois.readObject();
         ois.close();
     }
     // taken from https://stackoverflow.com/questions/16111496/

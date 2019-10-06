@@ -1,5 +1,5 @@
 package testMain;
-import com.sun.corba.se.spi.activation.LocatorPackage.ServerLocationPerORB;
+import info.Debt;
 import info.DebtsList;
 import info.Person;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,7 @@ public class SaveLoadTest {
     Person person;
     Person checkPerson;
     DebtsList debtsList;
-    ArrayList<Person> listOfPerson;
+    ArrayList<Debt> listOfPerson;
 
     @BeforeEach
     public void setUp() throws IOException {
@@ -30,8 +30,8 @@ public class SaveLoadTest {
     // test list saves a person and brings the list back
     public void testBringListBack() throws ClassNotFoundException, IOException {
         debtsList.load();
-        listOfPerson = debtsList.getListOfPeople();
-        Person firstPerson = listOfPerson.get(0);
+        listOfPerson = debtsList.getListOfDebt();
+        Debt firstPerson = listOfPerson.get(0);
         String firstPersonName = firstPerson.getWho();
         assertEquals(1, listOfPerson.size());
         assertTrue(firstPersonName.equals("Bob"));
@@ -43,8 +43,8 @@ public class SaveLoadTest {
     public void testAddOnePersonInList() throws ClassNotFoundException, IOException {
         debtsList.load();
         debtsList.logResult(checkPerson, 10, "Owe", "John");
-        listOfPerson = debtsList.getListOfPeople();
-        Person firstPerson = listOfPerson.get(0);
+        listOfPerson = debtsList.getListOfDebt();
+        Debt firstPerson = listOfPerson.get(0);
         String firstPersonName = firstPerson.getWho();
         assertEquals(2, listOfPerson.size());
         assertTrue(listOfPerson.contains(checkPerson));

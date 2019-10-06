@@ -1,11 +1,11 @@
 package testMain;
 
+import info.Debt;
 import info.DebtsList;
 import info.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +31,7 @@ public class LogResultTest {
    //test for one person in list
     @Test
     public void logResultTest() {
-        ArrayList<Person> list = debtsList.getListOfPeople();
+        ArrayList<Debt> list = debtsList.getListOfDebt();
         assertEquals(1, list.size());
         assertTrue(list.contains(person));
     }
@@ -40,7 +40,7 @@ public class LogResultTest {
     @Test
     public void logResultTestMultiple() {
         debtsList.logResult(checkPerson, 5, "Owed", "John");
-        ArrayList<Person> list = debtsList.getListOfPeople();
+        ArrayList<Debt> list = debtsList.getListOfDebt();
         assertEquals(2, list.size());
         assertTrue(list.contains(checkPerson));
         assertTrue(list.contains(person));
