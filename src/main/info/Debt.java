@@ -54,7 +54,7 @@ public abstract class Debt implements Serializable {
         this.dueDate = dueDate;
     }
 
-    public abstract void reminder();
+    public abstract String reminder();
 
 
 

@@ -3,6 +3,7 @@ package testMain;
 import info.Debt;
 import info.DebtsList;
 import info.Person;
+import info.UrgentPerson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LogResultTest {
     Person person;
+    UrgentPerson personTwo;
     DebtsList debtsList;
     Person checkPerson;
 
@@ -22,6 +24,8 @@ public class LogResultTest {
         checkPerson = new Person();
         debtsList = new DebtsList();
         debtsList.logResult(person, 5, "Owe", "Kevin", "No due date");
+        personTwo = new UrgentPerson();
+        debtsList.logResult(personTwo, 7, "Owe", "Joe", "October");
 
 
 
@@ -46,7 +50,13 @@ public class LogResultTest {
         assertTrue(list.contains(person));
     }
 
-
+    //test for reminder method in debt
+    @Test
+    public void testReminder() {
+        assertEquals(person.reminder(), "You owe Kevin 5 dollars.");
+        assertEquals((personTwo.reminder()), "You owe Joe 7 dollars by October");
+    }
+    
 
 
 

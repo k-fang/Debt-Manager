@@ -44,7 +44,7 @@ public class Input {
         }
         debtsList.save();
         for (Debt person : debtsList.getListOfDebt()) {
-            person.reminder();
+            System.out.println(person.reminder());
         }
     }
 

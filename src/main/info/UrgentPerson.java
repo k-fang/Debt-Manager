@@ -60,11 +60,11 @@ public class UrgentPerson extends Debt implements Serializable {
     }*/
 
     @Override
-    public void reminder() {
+    public String reminder() {
         if (oweOrOwed.equals("Owe")) {
-            System.out.println("You owe " + who + " " + amount + " dollars by " + dueDate);
+            return "You owe " + who + " " + amount + " dollars by " + dueDate;
         } else {
-            System.out.println(who + " owes you " + amount + " dollars by " + dueDate);
+            return who + " owes you " + amount + " dollars by " + dueDate;
         }
     }
 

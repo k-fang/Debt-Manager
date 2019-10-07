@@ -60,11 +60,11 @@ public class Person extends Debt implements Serializable {
     }*/
 
     @Override
-    public void reminder() {
+    public String reminder() {
         if (oweOrOwed.equals("Owe")) {
-            System.out.println("You owe " + who + " " + amount + " dollars.");
+            return "You owe " + who + " " + amount + " dollars.";
         } else {
-            System.out.println(who + " owes you " + amount + " dollars.");
+            return who + " owes you " + amount + " dollars.";
         }
     }
 
