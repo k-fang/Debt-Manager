@@ -15,17 +15,24 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LogResultTest {
     Person person;
     UrgentPerson personTwo;
+    Person personThree;
+    UrgentPerson personFour;
     DebtsList debtsList;
-    Person checkPerson;
+    DebtsList singleDebtsList;
+
 
     @BeforeEach
     public void setUp() {
         person = new Person();
-        checkPerson = new Person();
         debtsList = new DebtsList();
-        debtsList.logResult(person, 5, "Owe", "Kevin", "No due date");
+        singleDebtsList = new DebtsList();
+        singleDebtsList.logResult(person, 5, "Owe", "Kevin", "No due date");
         personTwo = new UrgentPerson();
         debtsList.logResult(personTwo, 7, "Owe", "Joe", "October");
+        personThree = new Person();
+        debtsList.logResult(personThree, 5, "Owed", "John", "No due date");
+        personFour = new UrgentPerson();
+        debtsList.logResult(personFour, 10, "Owed", "Bob", "November");
 
 
 
@@ -35,7 +42,7 @@ public class LogResultTest {
    //test for one person in list
     @Test
     public void logResultTest() {
-        ArrayList<Debt> list = debtsList.getListOfDebt();
+        ArrayList<Debt> list = singleDebtsList.getListOfDebt();
         assertEquals(1, list.size());
         assertTrue(list.contains(person));
     }
@@ -43,11 +50,12 @@ public class LogResultTest {
     //test for two people in list
     @Test
     public void logResultTestMultiple() {
-        debtsList.logResult(checkPerson, 5, "Owed", "John", "No due date");
+
         ArrayList<Debt> list = debtsList.getListOfDebt();
-        assertEquals(2, list.size());
-        assertTrue(list.contains(checkPerson));
-        assertTrue(list.contains(person));
+        assertEquals(3, list.size());
+        assertTrue(list.contains(personThree));
+        assertTrue(list.contains(personTwo));
+        assertTrue(list.contains(personFour));
     }
 
     //test for reminder method in debt
@@ -55,8 +63,10 @@ public class LogResultTest {
     public void testReminder() {
         assertEquals(person.reminder(), "You owe Kevin 5 dollars.");
         assertEquals((personTwo.reminder()), "You owe Joe 7 dollars by October");
+        assertEquals((personThree.reminder()),"John owes you 5 dollars.");
+        assertEquals((personFour.reminder()), "Bob owes you 10 dollars by November");
     }
-    
+
 
 
 
