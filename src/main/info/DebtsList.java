@@ -15,13 +15,14 @@ public class DebtsList implements Serializable, Loadable, Saveable {
     // REQUIRES: Person, int amount, string either "Owe" or "Owed", String for name
     // MODIFIES: this
     // EFFECTS: sets passed parameters to Person person
-    public void logResult(Debt person, int amount, String oweOrOwed, String who) {
+    public void logResult(Debt person, int amount, String oweOrOwed, String who, String dueDate) {
         person.setAmount(amount);
         person.setOweOrOwed(oweOrOwed);
         person.setWho(who);
+        person.setDueDate(dueDate);
         addList(person);
-
     }
+
 
     // REQUIRES: Person
     // MODIFIES: this

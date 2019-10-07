@@ -3,6 +3,7 @@ package info;
 import java.io.Serializable;
 
 public class Person extends Debt implements Serializable {
+    private String dueDate;
    /* private int amount;
     private String oweOrOwed;
     private String who;
@@ -48,8 +49,18 @@ public class Person extends Debt implements Serializable {
 
 // create something where i gotta pull out the name if someone requests it
 
+   /* @Override
+    protected void setDueDate(String dueDate) {
+        this.dueDate = dueDate
+    }
+
     @Override
-    protected void reminder() {
+    protected String getDueDate() {
+        return null;
+    }*/
+
+    @Override
+    public void reminder() {
         if (oweOrOwed.equals("Owe")) {
             System.out.println("You owe " + who + " " + amount + " dollars.");
         } else {

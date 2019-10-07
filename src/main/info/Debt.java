@@ -7,6 +7,7 @@ public abstract class Debt implements Serializable {
     protected int amount;
     protected String oweOrOwed;
     protected String who;
+    protected String dueDate;
 
     //EFFECTS: returns int amount of money owe or owed
     public int getAmount() {
@@ -45,7 +46,17 @@ public abstract class Debt implements Serializable {
         this.who = who;
     }
 
-    protected abstract void reminder();
+    /*protected abstract void setDueDate(String dueDate);
+
+    protected abstract String getDueDate();*/
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public abstract void reminder();
+
+
 
 }
 

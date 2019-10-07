@@ -7,7 +7,7 @@ public class UrgentPerson extends Debt implements Serializable {
     private int amount;
     private String oweOrOwed;
     private String who;*/
-    private String dueDate;
+
 
   /*  //EFFECTS: returns int amount of money owe or owed
     public int getAmount() {
@@ -24,10 +24,12 @@ public class UrgentPerson extends Debt implements Serializable {
         return who;
     }*/
 
-    //EFFECTS: returns due date
+
+
+  /*  //EFFECTS: returns due date
     public String getDueDate() {
         return dueDate;
-    }
+    }*/
 
    /* //REQUIRES: int amount
     //MODIFIES: this
@@ -50,15 +52,15 @@ public class UrgentPerson extends Debt implements Serializable {
         this.who = who;
     }
 */
-    //REQUIRES: String
+ /*   //REQUIRES: String
     //MODIFIES: this
     //EFFECTS: sets duedate to user input
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
-    }
+    }*/
 
     @Override
-    protected void reminder() {
+    public void reminder() {
         if (oweOrOwed.equals("Owe")) {
             System.out.println("You owe " + who + " " + amount + " dollars by " + dueDate);
         } else {

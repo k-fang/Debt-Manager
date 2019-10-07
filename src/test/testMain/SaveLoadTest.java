@@ -21,7 +21,7 @@ public class SaveLoadTest {
         person = new Person();
         checkPerson = new Person();
         debtsList = new DebtsList();
-        debtsList.logResult(person, 5, "Owe", "Bob");
+        debtsList.logResult(person, 5, "Owe", "Bob", "No due date");
         debtsList.save();
 
     }
@@ -42,7 +42,7 @@ public class SaveLoadTest {
     // test list saves a person, brings the list back, and adds another person
     public void testAddOnePersonInList() throws ClassNotFoundException, IOException {
         debtsList.load();
-        debtsList.logResult(checkPerson, 10, "Owe", "John");
+        debtsList.logResult(checkPerson, 10, "Owe", "John", "No due date");
         listOfPerson = debtsList.getListOfDebt();
         Debt firstPerson = listOfPerson.get(0);
         String firstPersonName = firstPerson.getWho();

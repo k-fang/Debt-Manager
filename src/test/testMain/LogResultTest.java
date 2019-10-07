@@ -21,7 +21,7 @@ public class LogResultTest {
         person = new Person();
         checkPerson = new Person();
         debtsList = new DebtsList();
-        debtsList.logResult(person, 5, "Owe", "Kevin");
+        debtsList.logResult(person, 5, "Owe", "Kevin", "No due date");
 
 
 
@@ -39,7 +39,7 @@ public class LogResultTest {
     //test for two people in list
     @Test
     public void logResultTestMultiple() {
-        debtsList.logResult(checkPerson, 5, "Owed", "John");
+        debtsList.logResult(checkPerson, 5, "Owed", "John", "No due date");
         ArrayList<Debt> list = debtsList.getListOfDebt();
         assertEquals(2, list.size());
         assertTrue(list.contains(checkPerson));
