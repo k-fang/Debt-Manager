@@ -19,7 +19,7 @@ public class LogResultTest {
 
 
     @BeforeEach
-    public void setUp() throws integerException {
+    public void setUp() throws IntegerException, OweOrOwedException {
         normalDebt = new NormalDebt();
         debtsList = new DebtsList();
         singleDebtsList = new DebtsList();

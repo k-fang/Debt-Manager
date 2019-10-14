@@ -1,8 +1,5 @@
 package testMain;
-import info.Debt;
-import info.DebtsList;
-import info.NormalDebt;
-import info.integerException;
+import info.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +15,7 @@ public class SaveLoadTest {
     ArrayList<Debt> listOfDebt;
 
     @BeforeEach
-    public void setUp() throws IOException, integerException {
+    public void setUp() throws IOException, IntegerException, OweOrOwedException {
         normalDebt = new NormalDebt();
         checkNormalDebt = new NormalDebt();
         debtsList = new DebtsList();
@@ -41,7 +38,7 @@ public class SaveLoadTest {
 
     @Test
     // test list saves a person, brings the list back, and adds another person
-    public void testAddOnePersonInList() throws ClassNotFoundException, IOException, integerException {
+    public void testAddOnePersonInList() throws ClassNotFoundException, IOException, IntegerException, OweOrOwedException {
         debtsList.load();
         debtsList.logResult(checkNormalDebt, 10, "Owe", "John", "No due date");
         listOfDebt = debtsList.getListOfDebt();
