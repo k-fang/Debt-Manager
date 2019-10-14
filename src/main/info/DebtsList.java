@@ -15,17 +15,17 @@ public class DebtsList implements Serializable, Loadable, Saveable {
     // REQUIRES: Person, int amount, string either "Owe" or "Owed", String for name
     // MODIFIES: this
     // EFFECTS: sets passed parameters to Person person
-    public void logResult(Debt debt, int amount, String oweOr, String who, String dueDate) throws IntegerException, OweOrOwedException {
-        if (amount <= 0) {
-            throw new IntegerException();
+    public void logResult(Debt debt, int amt, String oweOr, String who, String dueD) throws IntException, OweException {
+        if (amt <= 0) {
+            throw new IntException();
         }
-        debt.setAmount(amount);
+        debt.setAmount(amt);
         if (!oweOr.equalsIgnoreCase("Owe") && !oweOr.equalsIgnoreCase("Owed")) {
-            throw new OweOrOwedException();
+            throw new OweException();
         }
         debt.setOweOrOwed(oweOr);
         debt.setWho(who);
-        debt.setDueDate(dueDate);
+        debt.setDueDate(dueD);
         addList(debt);
 
     }

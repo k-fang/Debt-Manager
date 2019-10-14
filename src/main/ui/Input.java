@@ -46,10 +46,10 @@ public class Input {
         askPersonOrUrgentPerson();
         try {
             debtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
-        } catch (IntegerException e) {
+        } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
             userInput();
-        } catch (OweOrOwedException o) {
+        } catch (OweException o) {
             System.out.println("You did not state whether this person owes or is owed by you!\n"
                     + "Please enter you entry again.");
             userInput();

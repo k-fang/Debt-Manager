@@ -15,7 +15,7 @@ public class SaveLoadTest {
     ArrayList<Debt> listOfDebt;
 
     @BeforeEach
-    public void setUp() throws IOException, IntegerException, OweOrOwedException {
+    public void setUp() throws IOException, IntException, OweException {
         normalDebt = new NormalDebt();
         checkNormalDebt = new NormalDebt();
         debtsList = new DebtsList();
@@ -38,7 +38,7 @@ public class SaveLoadTest {
 
     @Test
     // test list saves a person, brings the list back, and adds another person
-    public void testAddOnePersonInList() throws ClassNotFoundException, IOException, IntegerException, OweOrOwedException {
+    public void testAddOnePersonInList() throws ClassNotFoundException, IOException, IntException, OweException {
         debtsList.load();
         debtsList.logResult(checkNormalDebt, 10, "Owe", "John", "No due date");
         listOfDebt = debtsList.getListOfDebt();

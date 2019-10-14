@@ -14,14 +14,13 @@ public class LogResultTest {
     UrgentDebt urgentDebt;
     NormalDebt normalDebtTwo;
     UrgentDebt urgentDebtTwo;
-    UrgentDebt urgentDebtNegative;
-    UrgentDebt urgentDebtNotOweOrOwed;
+    UrgentDebt urgentDebtExceptionTest;
     DebtsList debtsList;
     DebtsList singleDebtsList;
 
 
     @BeforeEach
-    public void setUp() throws IntegerException, OweOrOwedException {
+    public void setUp() throws IntException, OweException {
         normalDebt = new NormalDebt();
         debtsList = new DebtsList();
         singleDebtsList = new DebtsList();
@@ -32,8 +31,8 @@ public class LogResultTest {
         debtsList.logResult(normalDebtTwo, 5, "Owed", "John", "No due date");
         urgentDebtTwo = new UrgentDebt();
         debtsList.logResult(urgentDebtTwo, 10, "Owed", "Bob", "November");
-        urgentDebtNegative = new UrgentDebt();
-        urgentDebtNotOweOrOwed = new UrgentDebt();
+        urgentDebtExceptionTest = new UrgentDebt();
+
 
 
 
@@ -73,11 +72,11 @@ public class LogResultTest {
     @Test
     public void testExceptionThrowsIntegerException() {
         try {
-            debtsList.logResult(urgentDebtNegative, -5, "Owe", "Bob", "Nov");
+            debtsList.logResult(urgentDebtExceptionTest, -5, "Owe", "Bob", "Nov");
             fail();
-        } catch (IntegerException e) {
+        } catch (IntException e) {
 
-        } catch (OweOrOwedException e) {
+        } catch (OweException e) {
             fail();
         }
     }
@@ -85,13 +84,23 @@ public class LogResultTest {
     @Test
     public void testExceptionThrowsOweOrOwedException() {
         try {
-            debtsList.logResult(urgentDebtNotOweOrOwed, 10, "Dab", "Bobby", "Nov");
+            debtsList.logResult(urgentDebtExceptionTest, 10, "Dab", "Bobby", "Nov");
             fail();
-        } catch (IntegerException e) {
+        } catch (IntException e) {
             fail();
-        } catch (OweOrOwedException e) {
+        } catch (OweException e) {
         }
     }
 
+    @Test
+    public void testExceptionDoesNotThrow() {
+        try {
+            debtsList.logResult(urgentDebtExceptionTest, 10, "owe", "Bobby", "Nov");
+        } catch (IntException e) {
+            fail();
+        } catch (OweException e) {
+            fail();
+        }
+    }
 
 }
