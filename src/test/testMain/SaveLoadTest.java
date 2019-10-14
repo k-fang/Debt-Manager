@@ -1,7 +1,8 @@
 package testMain;
 import info.Debt;
 import info.DebtsList;
-import info.Person;
+import info.NormalDebt;
+import info.integerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,17 +12,17 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SaveLoadTest {
-    Person person;
-    Person checkPerson;
+    NormalDebt normalDebt;
+    NormalDebt checkNormalDebt;
     DebtsList debtsList;
-    ArrayList<Debt> listOfPerson;
+    ArrayList<Debt> listOfDebt;
 
     @BeforeEach
-    public void setUp() throws IOException {
-        person = new Person();
-        checkPerson = new Person();
+    public void setUp() throws IOException, integerException {
+        normalDebt = new NormalDebt();
+        checkNormalDebt = new NormalDebt();
         debtsList = new DebtsList();
-        debtsList.logResult(person, 5, "Owe", "Bob", "No due date");
+        debtsList.logResult(normalDebt, 5, "Owe", "Bob", "No due date");
         debtsList.save();
 
     }
@@ -30,24 +31,24 @@ public class SaveLoadTest {
     // test list saves a person and brings the list back
     public void testBringListBack() throws ClassNotFoundException, IOException {
         debtsList.load();
-        listOfPerson = debtsList.getListOfDebt();
-        Debt firstPerson = listOfPerson.get(0);
+        listOfDebt = debtsList.getListOfDebt();
+        Debt firstPerson = listOfDebt.get(0);
         String firstPersonName = firstPerson.getWho();
-        assertEquals(1, listOfPerson.size());
+        assertEquals(1, listOfDebt.size());
         assertTrue(firstPersonName.equals("Bob"));
     }
 
 
     @Test
     // test list saves a person, brings the list back, and adds another person
-    public void testAddOnePersonInList() throws ClassNotFoundException, IOException {
+    public void testAddOnePersonInList() throws ClassNotFoundException, IOException, integerException {
         debtsList.load();
-        debtsList.logResult(checkPerson, 10, "Owe", "John", "No due date");
-        listOfPerson = debtsList.getListOfDebt();
-        Debt firstPerson = listOfPerson.get(0);
+        debtsList.logResult(checkNormalDebt, 10, "Owe", "John", "No due date");
+        listOfDebt = debtsList.getListOfDebt();
+        Debt firstPerson = listOfDebt.get(0);
         String firstPersonName = firstPerson.getWho();
-        assertEquals(2, listOfPerson.size());
-        assertTrue(listOfPerson.contains(checkPerson));
+        assertEquals(2, listOfDebt.size());
+        assertTrue(listOfDebt.contains(checkNormalDebt));
         assertTrue(firstPersonName.equals("Bob"));
 
 

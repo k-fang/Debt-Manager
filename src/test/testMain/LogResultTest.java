@@ -1,9 +1,6 @@
 package testMain;
 
-import info.Debt;
-import info.DebtsList;
-import info.Person;
-import info.UrgentPerson;
+import info.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,26 +10,26 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class LogResultTest {
-    Person person;
-    UrgentPerson personTwo;
-    Person personThree;
-    UrgentPerson personFour;
+    NormalDebt normalDebt;
+    UrgentDebt urgentDebt;
+    NormalDebt normalDebtTwo;
+    UrgentDebt urgentDebtTwo;
     DebtsList debtsList;
     DebtsList singleDebtsList;
 
 
     @BeforeEach
-    public void setUp() {
-        person = new Person();
+    public void setUp() throws integerException {
+        normalDebt = new NormalDebt();
         debtsList = new DebtsList();
         singleDebtsList = new DebtsList();
-        singleDebtsList.logResult(person, 5, "Owe", "Kevin", "No due date");
-        personTwo = new UrgentPerson();
-        debtsList.logResult(personTwo, 7, "Owe", "Joe", "October");
-        personThree = new Person();
-        debtsList.logResult(personThree, 5, "Owed", "John", "No due date");
-        personFour = new UrgentPerson();
-        debtsList.logResult(personFour, 10, "Owed", "Bob", "November");
+        singleDebtsList.logResult(normalDebt, 5, "Owe", "Kevin", "No due date");
+        urgentDebt = new UrgentDebt();
+        debtsList.logResult(urgentDebt, 7, "Owe", "Joe", "October");
+        normalDebtTwo = new NormalDebt();
+        debtsList.logResult(normalDebtTwo, 5, "Owed", "John", "No due date");
+        urgentDebtTwo = new UrgentDebt();
+        debtsList.logResult(urgentDebtTwo, 10, "Owed", "Bob", "November");
 
 
 
@@ -44,7 +41,7 @@ public class LogResultTest {
     public void logResultTest() {
         ArrayList<Debt> list = singleDebtsList.getListOfDebt();
         assertEquals(1, list.size());
-        assertTrue(list.contains(person));
+        assertTrue(list.contains(normalDebt));
     }
 
     //test for two people in list
@@ -53,18 +50,18 @@ public class LogResultTest {
 
         ArrayList<Debt> list = debtsList.getListOfDebt();
         assertEquals(3, list.size());
-        assertTrue(list.contains(personThree));
-        assertTrue(list.contains(personTwo));
-        assertTrue(list.contains(personFour));
+        assertTrue(list.contains(normalDebtTwo));
+        assertTrue(list.contains(urgentDebt));
+        assertTrue(list.contains(urgentDebtTwo));
     }
 
     //test for reminder method in debt
     @Test
     public void testReminder() {
-        assertEquals(person.reminder(), "You owe Kevin 5 dollars.");
-        assertEquals((personTwo.reminder()), "You owe Joe 7 dollars by October");
-        assertEquals((personThree.reminder()),"John owes you 5 dollars.");
-        assertEquals((personFour.reminder()), "Bob owes you 10 dollars by November");
+        assertEquals(normalDebt.reminder(), "You owe Kevin 5 dollars.");
+        assertEquals((urgentDebt.reminder()), "You owe Joe 7 dollars by October");
+        assertEquals((normalDebtTwo.reminder()),"John owes you 5 dollars.");
+        assertEquals((urgentDebtTwo.reminder()), "Bob owes you 10 dollars by November");
     }
 
 

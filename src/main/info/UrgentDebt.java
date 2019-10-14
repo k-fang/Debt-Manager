@@ -2,7 +2,7 @@ package info;
 
 import java.io.Serializable;
 
-public class UrgentPerson extends Debt implements Serializable {
+public class UrgentDebt extends Debt implements Serializable {
     /*
     private int amount;
     private String oweOrOwed;

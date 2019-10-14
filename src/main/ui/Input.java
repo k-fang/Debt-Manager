@@ -1,9 +1,6 @@
 package ui;
 
-import info.Debt;
-import info.DebtsList;
-import info.Person;
-import info.UrgentPerson;
+import info.*;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -25,6 +22,7 @@ public class Input {
 
     public Input() throws IOException, ClassNotFoundException {
         debtsList = new DebtsList();
+        dueDate = "";
         run();
     }
 
@@ -34,8 +32,11 @@ public class Input {
         askLoadOrNew();
         while (true) {
             askPersonOrUrgentPerson();
-           /* Debt person = new Person();
-            userInput(person);*/
+            try {
+                debtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
+            } catch (integerException e) {
+                System.out.println("You entered a negative or zero amount!\nPlease Enter your entry again.");
+            }
             System.out.println("Are you finished imputing numbers? (Type Yes or No)");
             String done = input.next();
             if (done.equals("Yes")) {
@@ -43,26 +44,44 @@ public class Input {
             }
         }
         debtsList.save();
-        for (Debt person : debtsList.getListOfDebt()) {
-            System.out.println(person.reminder());
-        }
+        printList();
     }
+
+
 
     private void askPersonOrUrgentPerson() {
         Scanner input = new Scanner(System.in);
         System.out.println("Would you like to create and urgent item or a regular item? (Type 'Urgent' or 'Regular')");
         String urgentOrRegular = input.next();
         if (urgentOrRegular.equals("Regular")) {
-            debt = new Person();
-            userInput(debt);
-            debtsList.logResult(debt, amount, oweOrOwed, who, "No due date");
+            normalDebt();
         } else {
-            debt = new UrgentPerson();
-            System.out.println("What is the date this debt is due?");
-            dueDate = input.next();
-            userInput(debt);
-            debtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
+            urgentDebt();
         }
+    }
+
+    public void normalDebt() {
+        debt = new NormalDebt();
+        userInput(debt);
+        /*try {
+            debtsList.logResult(debt, amount, oweOrOwed, who, "No due date");
+        } catch (integerException e) {
+            System.out.println("You entered a negative or zero amount!");
+            */
+
+    }
+
+    public void urgentDebt() {
+        Scanner input = new Scanner(System.in);
+        debt = new UrgentDebt();
+        System.out.println("What is the date this debt is due?");
+        dueDate = input.next();
+        userInput(debt);
+       /* try {
+            debtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
+        } catch (integerException e) {
+            System.out.println("You entered a negative or zero amount!");
+        }*/
     }
 
     public void askLoadOrNew() throws IOException, ClassNotFoundException {
@@ -85,17 +104,22 @@ public class Input {
             amount = input.nextInt();
             System.out.println("Who owes you this money?");
             who = input.next();
-            System.out.println("You are owed " + amount + " dollars by " + who);
-            //debtsList.logResult(person, amount, oweOrOwed, who);
+
 
         } else {
             System.out.println("Please enter the amount you owe");
             amount = input.nextInt();
             System.out.println("Who do you owe this money to?");
             who = input.next();
-            System.out.println("You owe " + amount + " dollars to " + who);
-            //debtsList.logResult(person, amount, oweOrOwed, who);
+
+
         }
 
+    }
+
+    public void printList() {
+        for (Debt debt : debtsList.getListOfDebt()) {
+            System.out.println(debt.reminder());
+        }
     }
 }

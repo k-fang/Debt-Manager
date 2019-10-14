@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class DebtsList implements Serializable, Loadable, Saveable {
 
     private ArrayList<Debt> listOfDebt;
-    private Person person;
+    private NormalDebt normalDebt;
 
     public DebtsList() {
         listOfDebt = new ArrayList<>();
@@ -15,12 +15,16 @@ public class DebtsList implements Serializable, Loadable, Saveable {
     // REQUIRES: Person, int amount, string either "Owe" or "Owed", String for name
     // MODIFIES: this
     // EFFECTS: sets passed parameters to Person person
-    public void logResult(Debt person, int amount, String oweOrOwed, String who, String dueDate) {
+    public void logResult(Debt person, int amount, String oweOr, String who, String dueDate) throws integerException {
+        if (amount <= 0) {
+            throw new integerException();
+        }
         person.setAmount(amount);
-        person.setOweOrOwed(oweOrOwed);
+        person.setOweOrOwed(oweOr);
         person.setWho(who);
         person.setDueDate(dueDate);
         addList(person);
+
     }
 
 
@@ -49,6 +53,7 @@ public class DebtsList implements Serializable, Loadable, Saveable {
         pw.close();
     }*/
 
+    //EFFECTS: saves listofDebt to a file
     @Override
     public void save() throws IOException {
         FileOutputStream fos = new FileOutputStream("t.tmp");
@@ -57,6 +62,7 @@ public class DebtsList implements Serializable, Loadable, Saveable {
         oos.close();
     }
 
+    //EFFECTS: loads listofDebt from a file
     @Override
     public void load() throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream("t.tmp");
@@ -69,7 +75,7 @@ public class DebtsList implements Serializable, Loadable, Saveable {
     // java-how-can-i-write-my-arraylist-to-a-file-and-read-load-that-file-to-the
 
 
-    public String getPerson() {
-        return person.getWho();
+    public String getNormalDebt() {
+        return normalDebt.getWho();
     }
 }
