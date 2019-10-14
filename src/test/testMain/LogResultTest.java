@@ -14,6 +14,8 @@ public class LogResultTest {
     UrgentDebt urgentDebt;
     NormalDebt normalDebtTwo;
     UrgentDebt urgentDebtTwo;
+    UrgentDebt urgentDebtNegative;
+    UrgentDebt urgentDebtNotOweOrOwed;
     DebtsList debtsList;
     DebtsList singleDebtsList;
 
@@ -30,6 +32,10 @@ public class LogResultTest {
         debtsList.logResult(normalDebtTwo, 5, "Owed", "John", "No due date");
         urgentDebtTwo = new UrgentDebt();
         debtsList.logResult(urgentDebtTwo, 10, "Owed", "Bob", "November");
+        urgentDebtNegative = new UrgentDebt();
+        urgentDebtNotOweOrOwed = new UrgentDebt();
+
+
 
 
 
@@ -64,9 +70,28 @@ public class LogResultTest {
         assertEquals((urgentDebtTwo.reminder()), "Bob owes you 10 dollars by November");
     }
 
+    @Test
+    public void testExceptionThrowsIntegerException() {
+        try {
+            debtsList.logResult(urgentDebtNegative, -5, "Owe", "Bob", "Nov");
+            fail();
+        } catch (IntegerException e) {
 
+        } catch (OweOrOwedException e) {
+            fail();
+        }
+    }
 
-
+    @Test
+    public void testExceptionThrowsOweOrOwedException() {
+        try {
+            debtsList.logResult(urgentDebtNotOweOrOwed, 10, "Dab", "Bobby", "Nov");
+            fail();
+        } catch (IntegerException e) {
+            fail();
+        } catch (OweOrOwedException e) {
+        }
+    }
 
 
 }

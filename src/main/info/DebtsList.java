@@ -46,15 +46,6 @@ public class DebtsList implements Serializable, Loadable, Saveable {
 
 
 
-    /*public void save() throws IOException {
-        PrintWriter pw = new PrintWriter (new FileOutputStream("input"));
-        for (Person person : listOfPeople) {
-            pw.println(person.getWho());
-            pw.println(person.getAmount());
-            pw.println(person.getOweOrOwed());
-        }
-        pw.close();
-    }*/
 
     //EFFECTS: saves listofDebt to a file
     @Override

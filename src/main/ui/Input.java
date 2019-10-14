@@ -62,7 +62,7 @@ public class Input {
 
     private void askPersonOrUrgentPerson() {
         Scanner input = new Scanner(System.in);
-        System.out.println("Would you like to create and urgent item or a regular item? (Type 'Urgent' or 'Regular')");
+        System.out.println("Would you like to create and urgent item or a regular debt? (Type 'Urgent' or 'Regular')");
         String urgentOrRegular = input.next();
         if (urgentOrRegular.equalsIgnoreCase("Regular")) {
             normalDebt();
@@ -74,11 +74,7 @@ public class Input {
     public void normalDebt() {
         debt = new NormalDebt();
         debtInput(debt);
-        /*try {
-            debtsList.logResult(debt, amount, oweOrOwed, who, "No due date");
-        } catch (integerException e) {
-            System.out.println("You entered a negative or zero amount!");
-            */
+
 
     }
 
@@ -88,16 +84,13 @@ public class Input {
         System.out.println("What is the date this debt is due?");
         dueDate = input.next();
         debtInput(debt);
-       /* try {
-            debtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
-        } catch (integerException e) {
-            System.out.println("You entered a negative or zero amount!");
-        }*/
+
     }
 
     public void askLoadOrNew() throws IOException, ClassNotFoundException {
         Scanner input = new Scanner(System.in);
-        System.out.println("Would you like to load a previous list or create a new list? (Type 'Load' or 'New')");
+        System.out.println("Would you like to load a previous list or create a new list of debts? "
+                + "(Type 'Load' or 'New')");
         String loadOrNew = input.next();
         if (loadOrNew.equalsIgnoreCase("Load")) {
             debtsList.load();
@@ -111,7 +104,7 @@ public class Input {
         System.out.println("Do you owe money or are you owed money? (Type Owe or Owed)");
         oweOrOwed = input.next();
         if (oweOrOwed.equalsIgnoreCase("Owed")) {
-            System.out.println("Please enter the amount owed to you");
+            System.out.println("Please enter the amount owed to you (No dollar signs please)");
             amount = input.nextInt();
             System.out.println("Who owes you this money?");
             who = input.next();
