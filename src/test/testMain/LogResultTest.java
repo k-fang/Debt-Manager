@@ -15,22 +15,22 @@ public class LogResultTest {
     NormalDebt normalDebtTwo;
     UrgentDebt urgentDebtTwo;
     UrgentDebt urgentDebtExceptionTest;
-    DebtsList debtsList;
+    DebtsList recurringDebtsList;
     DebtsList singleDebtsList;
 
 
     @BeforeEach
     public void setUp() throws IntException, OweException {
         normalDebt = new NormalDebt();
-        debtsList = new DebtsList();
-        singleDebtsList = new DebtsList();
+        recurringDebtsList = new RecurringDebtsList();
+        singleDebtsList = new RecurringDebtsList();
         singleDebtsList.logResult(normalDebt, 5, "Owe", "Kevin", "No due date");
         urgentDebt = new UrgentDebt();
-        debtsList.logResult(urgentDebt, 7, "Owe", "Joe", "October");
+        recurringDebtsList.logResult(urgentDebt, 7, "Owe", "Joe", "October");
         normalDebtTwo = new NormalDebt();
-        debtsList.logResult(normalDebtTwo, 5, "Owed", "John", "No due date");
+        recurringDebtsList.logResult(normalDebtTwo, 5, "Owed", "John", "No due date");
         urgentDebtTwo = new UrgentDebt();
-        debtsList.logResult(urgentDebtTwo, 10, "Owed", "Bob", "November");
+        recurringDebtsList.logResult(urgentDebtTwo, 10, "Owed", "Bob", "November");
         urgentDebtExceptionTest = new UrgentDebt();
 
 
@@ -53,7 +53,7 @@ public class LogResultTest {
     @Test
     public void logResultTestMultiple() {
 
-        ArrayList<Debt> list = debtsList.getListOfDebt();
+        ArrayList<Debt> list = recurringDebtsList.getListOfDebt();
         assertEquals(3, list.size());
         assertTrue(list.contains(normalDebtTwo));
         assertTrue(list.contains(urgentDebt));
@@ -72,7 +72,7 @@ public class LogResultTest {
     @Test
     public void testExceptionThrowsIntegerException() {
         try {
-            debtsList.logResult(urgentDebtExceptionTest, -5, "Owe", "Bob", "Nov");
+            recurringDebtsList.logResult(urgentDebtExceptionTest, -5, "Owe", "Bob", "Nov");
             fail();
         } catch (IntException e) {
 
@@ -84,7 +84,7 @@ public class LogResultTest {
     @Test
     public void testExceptionThrowsOweOrOwedException() {
         try {
-            debtsList.logResult(urgentDebtExceptionTest, 10, "Dab", "Bobby", "Nov");
+            recurringDebtsList.logResult(urgentDebtExceptionTest, 10, "Dab", "Bobby", "Nov");
             fail();
         } catch (IntException e) {
             fail();
@@ -95,7 +95,7 @@ public class LogResultTest {
     @Test
     public void testExceptionDoesNotThrow() {
         try {
-            debtsList.logResult(urgentDebtExceptionTest, 10, "owe", "Bobby", "Nov");
+            recurringDebtsList.logResult(urgentDebtExceptionTest, 10, "owe", "Bobby", "Nov");
         } catch (IntException e) {
             fail();
         } catch (OweException e) {

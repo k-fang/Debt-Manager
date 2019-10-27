@@ -3,18 +3,20 @@ package info;
 import java.io.*;
 import java.util.ArrayList;
 
-public class DebtsList implements Serializable, Loadable, Saveable {
+public abstract class DebtsList implements Serializable, Loadable, Saveable {
 
-    private ArrayList<Debt> listOfDebt;
-    private NormalDebt normalDebt;
+    protected ArrayList<Debt> listOfDebt;
+    protected ArrayList<Debt> listOfRecurringDebt;
+
 
     public DebtsList() {
         listOfDebt = new ArrayList<>();
+        listOfRecurringDebt = new ArrayList<>();
     }
 
-    // REQUIRES: Person, int amount, string either "Owe" or "Owed", String for name
-    // MODIFIES: this
-    // EFFECTS: sets passed parameters to Person person
+
+    // MODIFIES: Debt, this
+    // EFFECTS: sets passed parameters to Debt, and adds debt to listOfDebt
     public void logResult(Debt debt, int amt, String oweOr, String who, String dueD) throws IntException, OweException {
         if (amt <= 0) {
             throw new IntException();
@@ -31,16 +33,50 @@ public class DebtsList implements Serializable, Loadable, Saveable {
     }
 
 
-    // REQUIRES: Person
+    // REQUIRES: Debt
     // MODIFIES: this
-    // EFFECTS: adds a new person to listOfPeople
-    public void addList(Debt person) {
-        listOfDebt.add(person);
+    // EFFECTS: adds a new debt to listOfDebt
+    public void addList(Debt debt) {
+        listOfDebt.add(debt);
     }
 
-    //EFFECTS: returns listOfPeople
+    // REQUIRES: Debt
+    // MODIFIES: this
+    // EFFECTS: adds a new debt to listOfRecurringDebt
+    public void addListRe(Debt debt) {
+        listOfRecurringDebt.add(debt);
+    }
+
+    // REQUIRES: Debt
+    // MODIFIES: this
+    // EFFECTS: removes the given debt from listOfDebt
+    public abstract void removeList(Debt debt);
+      /*  if (listOfDebt.contains(debt)) {
+            listOfDebt.remove(debt);
+            removeListRe(debt);
+        }*/
+
+/*
+    // REQUIRES: Debt
+    // MODIFIES: this
+    // EFFECTS: removes the given debt from listOfRecurringDebt
+    public void removeListRe(Debt debt) {
+        if (listOfRecurringDebt.contains(debt)) {
+            listOfRecurringDebt.remove(debt);
+            removeList(debt);
+        }
+    }*/
+
+
+
+    //EFFECTS: returns listOfDebt
     public ArrayList<Debt> getListOfDebt() {
         return listOfDebt;
+    }
+
+    //EFFECTS: returns listOfDebt
+    public ArrayList<Debt> getListOfDebtRe() {
+        return listOfRecurringDebt;
     }
 
 
@@ -69,7 +105,6 @@ public class DebtsList implements Serializable, Loadable, Saveable {
     // java-how-can-i-write-my-arraylist-to-a-file-and-read-load-that-file-to-the
 
 
-    public String getNormalDebt() {
-        return normalDebt.getWho();
-    }
+
+
 }

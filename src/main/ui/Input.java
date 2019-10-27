@@ -6,12 +6,13 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Input {
-    private DebtsList debtsList;
+    private DebtsList recurringDebtsList;
     private Debt debt;
     private int amount;
     private String who;
     private String oweOrOwed;
     private String dueDate;
+    private boolean recurring;
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -21,7 +22,7 @@ public class Input {
     }
 
     public Input() throws IOException, ClassNotFoundException {
-        debtsList = new DebtsList();
+        recurringDebtsList = new RecurringDebtsList();
         dueDate = "";
         run();
     }
@@ -38,14 +39,15 @@ public class Input {
                 break; // referenced from B04 simple calculator lecture lab
             }
         }
-        debtsList.save();
+        recurringDebtsList.save();
         printList();
     }
 
+    // EFFECTS: collects more user input and checks that it makes sense, if not throw exception
     public void userInput() {
         askPersonOrUrgentPerson();
         try {
-            debtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
+            recurringDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
         } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
             userInput();
@@ -53,10 +55,7 @@ public class Input {
             System.out.println("You did not state whether this person owes or is owed by you!\n"
                     + "Please enter you entry again.");
             userInput();
-        } finally {
-            System.out.println("Thank You.");
         }
-
     }
 
 
@@ -93,7 +92,7 @@ public class Input {
                 + "(Type 'Load' or 'New')");
         String loadOrNew = input.next();
         if (loadOrNew.equalsIgnoreCase("Load")) {
-            debtsList.load();
+            recurringDebtsList.load();
         }
     }
 
@@ -122,7 +121,7 @@ public class Input {
     }
 
     public void printList() {
-        for (Debt debt : debtsList.getListOfDebt()) {
+        for (Debt debt : recurringDebtsList.getListOfDebt()) {
             System.out.println(debt.reminder());
         }
     }
