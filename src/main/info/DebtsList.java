@@ -94,7 +94,7 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
     //EFFECTS: saves listofDebt to a file
     @Override
     public void saveRec() throws IOException {
-        FileOutputStream fos = new FileOutputStream("t.tmp");
+        FileOutputStream fos = new FileOutputStream("t.tmp2");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(listOfRecurringDebt);
         oos.close();
@@ -103,7 +103,7 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
     //EFFECTS: loads listofDebt from a file
     @Override
     public void loadRec() throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream("t.tmp");
+        FileInputStream fis = new FileInputStream("t.tmp2");
         ObjectInputStream ois = new ObjectInputStream(fis);
         // person = (Person) ois.readObject();
         listOfRecurringDebt = (ArrayList<Debt>) ois.readObject();

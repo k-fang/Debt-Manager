@@ -158,8 +158,9 @@ public class Input {
                 + "(Type 'Load' or 'New')");
         String loadOrNew = input.next();
         if (loadOrNew.equalsIgnoreCase("Load")) {
-            normalUrgentDebtsList.load();
             recurringDebtsList.loadRec();
+            normalUrgentDebtsList.load();
+
         }
     }
 
