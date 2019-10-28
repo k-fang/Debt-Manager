@@ -6,6 +6,6 @@ public interface Loadable {
 
     public void load() throws IOException, ClassNotFoundException;
 
-    public void loadRec() throws IOException, ClassNotFoundException;
+
 
 }

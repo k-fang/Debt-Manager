@@ -1,5 +1,8 @@
 package info;
 
+import java.io.*;
+import java.util.ArrayList;
+
 public class RecurringDebtsList extends DebtsList {
 
     // MODIFIES: Debt, this
@@ -15,24 +18,51 @@ public class RecurringDebtsList extends DebtsList {
         debt.setOweOrOwed(o);
         debt.setWho(w);
         debt.setDueDate(d);
-        addListRe(debt);
+        /*addListRe(debt);*/
 
     }
 
     // REQUIRES: Debt
     // MODIFIES: this
     // EFFECTS: adds a new debt to listOfRecurringDebt
-    public void addListRe(Debt debt) {
+    public void addListRe(NormalUrgentDebtsList ndl, Debt debt) {
         listOfRecurringDebt.add(debt);
+        ndl.addList(debt);
 
     }
 
 
-    @Override
-    public void removeList(Debt debt) {
+    /*@Override*/
+    public void removeList(NormalUrgentDebtsList ndl, Debt debt) {
         if (listOfRecurringDebt.contains(debt)) {
             listOfRecurringDebt.remove(debt);
-            /*normalUrgentDebtsList.removeList(debt);*/
+            ndl.removeList(this, debt);
         }
     }
+
+    @Override
+    public ArrayList<Debt> getListOfDebt() {
+        return listOfRecurringDebt;
+    }
+
+    //EFFECTS: saves listofDebt to a file
+    @Override
+    public void save() throws IOException {
+        FileOutputStream fos = new FileOutputStream("t.tmp2");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(listOfRecurringDebt);
+        oos.close();
+    }
+
+    //EFFECTS: loads listofDebt from a file
+    @Override
+    public void load() throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream("t.tmp2");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        // person = (Person) ois.readObject();
+        listOfRecurringDebt = (ArrayList<Debt>) ois.readObject();
+        ois.close();
+    }
+    // taken from https://stackoverflow.com/questions/16111496/
+    // java-how-can-i-write-my-arraylist-to-a-file-and-read-load-that-file-to-the
 }

@@ -7,6 +7,8 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
 
     protected ArrayList<Debt> listOfDebt;
     protected ArrayList<Debt> listOfRecurringDebt;
+    protected NormalUrgentDebtsList regularDebtsList;
+    protected RecurringDebtsList recurringDebtsList;
 
 
     public DebtsList() {
@@ -34,13 +36,16 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
     }
 */
 
+    public Debt getSpecificDebt(int i) {
+        return listOfDebt.get(i - 1);
+    }
 
 
 
     // REQUIRES: Debt
     // MODIFIES: this
     // EFFECTS: removes the given debt from listOfDebt
-    public abstract void removeList(Debt debt);
+    /*public abstract void removeList(Debt debt);*/
       /*  if (listOfDebt.contains(debt)) {
             listOfDebt.remove(debt);
             removeListRe(debt);
@@ -60,7 +65,7 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
 
 
     //EFFECTS: returns listOfDebt
-    public ArrayList<Debt> getListOfDebt() {
+    public abstract ArrayList<Debt> getListOfDebt(); /*{
         return listOfDebt;
     }
 
@@ -68,48 +73,30 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
     public ArrayList<Debt> getListOfDebtRe() {
         return listOfRecurringDebt;
     }
-
+*/
 
 
 
 
     //EFFECTS: saves listofDebt to a file
     @Override
-    public void save() throws IOException {
+    public abstract void save() throws IOException;/* {
         FileOutputStream fos = new FileOutputStream("t.tmp");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(listOfDebt);
         oos.close();
-    }
+    }*/
 
     //EFFECTS: loads listofDebt from a file
     @Override
-    public void load() throws IOException, ClassNotFoundException {
+    public abstract void load() throws IOException, ClassNotFoundException;/* {
         FileInputStream fis = new FileInputStream("t.tmp");
         ObjectInputStream ois = new ObjectInputStream(fis);
         // person = (Person) ois.readObject();
         listOfDebt = (ArrayList<Debt>) ois.readObject();
         ois.close();
-    }
+    }*/
 
-    //EFFECTS: saves listofDebt to a file
-    @Override
-    public void saveRec() throws IOException {
-        FileOutputStream fos = new FileOutputStream("t.tmp2");
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(listOfRecurringDebt);
-        oos.close();
-    }
-
-    //EFFECTS: loads listofDebt from a file
-    @Override
-    public void loadRec() throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream("t.tmp2");
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        // person = (Person) ois.readObject();
-        listOfRecurringDebt = (ArrayList<Debt>) ois.readObject();
-        ois.close();
-    }
     // taken from https://stackoverflow.com/questions/16111496/
     // java-how-can-i-write-my-arraylist-to-a-file-and-read-load-that-file-to-the
 
