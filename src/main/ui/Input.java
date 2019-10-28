@@ -123,6 +123,7 @@ public class Input {
         } else if (answer.equalsIgnoreCase("Recurring")) {
             recurringDebt();
             logRecurrentResult();
+
         } else {
             System.out.println("You didn't enter a recognized answer!");
         }
@@ -189,14 +190,18 @@ public class Input {
     }
 
     public void printRegularList() {
+        int i = 1;
         for (Debt debt : normalUrgentDebtsList.getListOfDebt()) {
-            System.out.println(debt.reminder());
+            System.out.println(i + ". " + debt.reminder());
+            i = i + 1;
         }
     }
 
     public void printRecurringList() {
+        int i = 1;
         for (Debt debt : recurringDebtsList.getListOfDebtRe()) {
-            System.out.println(debt.reminder());
+            System.out.println(i + ". " + debt.reminder());
+            i = i + 1;
         }
     }
 }

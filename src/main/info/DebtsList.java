@@ -17,17 +17,18 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
 
     // MODIFIES: Debt, this
     // EFFECTS: sets passed parameters to Debt, and adds debt to listOfDebt
-    public abstract void logResult(Debt debt, int amt, String oweOr, String who, String dueD) throws IntException, OweException;/*{
+    public abstract void logResult(Debt debt, int amt, String o, String w, String d) throws IntException, OweException;
+    /*{
         if (amt <= 0) {
             throw new IntException();
         }
         debt.setAmount(amt);
-        if (!oweOr.equalsIgnoreCase("Owe") && !oweOr.equalsIgnoreCase("Owed")) {
+        if (!o.equalsIgnoreCase("Owe") && !o.equalsIgnoreCase("Owed")) {
             throw new OweException();
         }
-        debt.setOweOrOwed(oweOr);
-        debt.setWho(who);
-        debt.setDueDate(dueD);
+        debt.setOweOrOwed(o);
+        debt.setWho(w);
+        debt.setDueDate(d);
         addList(debt);
 
     }
