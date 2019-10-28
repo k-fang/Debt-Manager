@@ -17,7 +17,7 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
 
     // MODIFIES: Debt, this
     // EFFECTS: sets passed parameters to Debt, and adds debt to listOfDebt
-    public void logResult(Debt debt, int amt, String oweOr, String who, String dueD) throws IntException, OweException {
+    public abstract void logResult(Debt debt, int amt, String oweOr, String who, String dueD) throws IntException, OweException;/*{
         if (amt <= 0) {
             throw new IntException();
         }
@@ -31,21 +31,10 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
         addList(debt);
 
     }
+*/
 
 
-    // REQUIRES: Debt
-    // MODIFIES: this
-    // EFFECTS: adds a new debt to listOfDebt
-    public void addList(Debt debt) {
-        listOfDebt.add(debt);
-    }
 
-    // REQUIRES: Debt
-    // MODIFIES: this
-    // EFFECTS: adds a new debt to listOfRecurringDebt
-    public void addListRe(Debt debt) {
-        listOfRecurringDebt.add(debt);
-    }
 
     // REQUIRES: Debt
     // MODIFIES: this
@@ -99,6 +88,25 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
         ObjectInputStream ois = new ObjectInputStream(fis);
         // person = (Person) ois.readObject();
         listOfDebt = (ArrayList<Debt>) ois.readObject();
+        ois.close();
+    }
+
+    //EFFECTS: saves listofDebt to a file
+    @Override
+    public void saveRec() throws IOException {
+        FileOutputStream fos = new FileOutputStream("t.tmp");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(listOfRecurringDebt);
+        oos.close();
+    }
+
+    //EFFECTS: loads listofDebt from a file
+    @Override
+    public void loadRec() throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream("t.tmp");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        // person = (Person) ois.readObject();
+        listOfRecurringDebt = (ArrayList<Debt>) ois.readObject();
         ois.close();
     }
     // taken from https://stackoverflow.com/questions/16111496/

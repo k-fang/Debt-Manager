@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Input {
+    private DebtsList normalUrgentDebtsList;
     private DebtsList recurringDebtsList;
     private Debt debt;
     private int amount;
@@ -22,6 +23,7 @@ public class Input {
     }
 
     public Input() throws IOException, ClassNotFoundException {
+        normalUrgentDebtsList = new NormalUrgentDebtsList();
         recurringDebtsList = new RecurringDebtsList();
         dueDate = "";
         run();
@@ -32,42 +34,106 @@ public class Input {
         Scanner input = new Scanner(System.in);
         askLoadOrNew();
         while (true) {
-            userInput();
-            System.out.println("Are you finished imputing numbers? (Type Yes or No)");
+            askViewOrInput();
+            System.out.println("Would you like to continue? (Type Yes or No)");
             String done = input.next();
-            if (done.equalsIgnoreCase("Yes")) {
+            if (done.equalsIgnoreCase("No")) {
                 break; // referenced from B04 simple calculator lecture lab
             }
         }
-        recurringDebtsList.save();
-        printList();
+        normalUrgentDebtsList.save();
+        recurringDebtsList.saveRec();
     }
 
-    // EFFECTS: collects more user input and checks that it makes sense, if not throw exception
+   /* // EFFECTS: collects more user input and checks that it makes sense, if not throw exception
     public void userInput() {
-        askPersonOrUrgentPerson();
+                    askDebtType();
+            logRegularResult();
+        } else if (answer.equalsIgnoreCase("Recurring")) {
+            askDebtType();
+            logRecurrentResult();
+        } else {
+            System.out.println("You didn't type a recognized answer");
+        }
+    }*/
+
+    private void logRecurrentResult() {
         try {
             recurringDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
         } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
-            userInput();
+            askDebtType();
         } catch (OweException o) {
             System.out.println("You did not state whether this person owes or is owed by you!\n"
                     + "Please enter you entry again.");
-            userInput();
+            askDebtType();
+        }
+    }
+
+    private void logRegularResult() {
+        try {
+            normalUrgentDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
+        } catch (IntException e) {
+            System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
+            /*userInput();*/
+            askDebtType();
+        } catch (OweException o) {
+            System.out.println("You did not state whether this person owes or is owed by you!\n"
+                    + "Please enter you entry again.");
+            /*userInput();*/
+            askDebtType();
+        }
+    }
+
+    private void askViewOrInput() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Would you like to view your Debts, create, or delete an entry? (Type 'View' or 'Entry')");
+        String answer = input.next();
+        if (answer.equalsIgnoreCase("view")) {
+            System.out.println("Would you like to see your recurring or regular debts? (Type 'Recur' or 'Regular')");
+            String answertwo = input.next();
+            if (answertwo.equalsIgnoreCase("regular") && !normalUrgentDebtsList.getListOfDebt().isEmpty()) {
+                printRegularList();
+            } else if (answertwo.equalsIgnoreCase("recur") && !recurringDebtsList.getListOfDebtRe().isEmpty()) {
+                printRecurringList();
+            } else if (!answertwo.equalsIgnoreCase("regular") && !answertwo.equalsIgnoreCase("recur")) {
+                System.out.println("You didn't type one of the two options.");
+            } else {
+                System.out.println("You have no debts in that category!");
+            }
+        } else {
+            askDebtType();
         }
     }
 
 
-    private void askPersonOrUrgentPerson() {
+    private void askDebtType() {
         Scanner input = new Scanner(System.in);
-        System.out.println("Would you like to create and urgent item or a regular debt? (Type 'Urgent' or 'Regular')");
-        String urgentOrRegular = input.next();
-        if (urgentOrRegular.equalsIgnoreCase("Regular")) {
+        System.out.println("What would you like to do:\n"
+                + "Create an urgent debt (Type 'Urgent')\n"
+                + "Create a regular debt (Type 'Regular')\n"
+                + "Create a recurring debt (Type 'Recurring')\n");
+        String answer = input.next();
+        if (answer.equalsIgnoreCase("Regular")) {
             normalDebt();
-        } else {
+            logRegularResult();
+        } else if (answer.equalsIgnoreCase("Urgent")) {
             urgentDebt();
+            logRegularResult();
+        } else if (answer.equalsIgnoreCase("Recurring")) {
+            recurringDebt();
+            logRecurrentResult();
+        } else {
+            System.out.println("You didn't enter a recognized answer!");
         }
+    }
+
+    private void recurringDebt() {
+        Scanner input = new Scanner(System.in);
+        debt = new RecurringDebt();
+        System.out.println("How often is this debt due? (every '...')");
+        dueDate = input.next();
+        debtInput(debt);
     }
 
     public void normalDebt() {
@@ -92,7 +158,8 @@ public class Input {
                 + "(Type 'Load' or 'New')");
         String loadOrNew = input.next();
         if (loadOrNew.equalsIgnoreCase("Load")) {
-            recurringDebtsList.load();
+            normalUrgentDebtsList.load();
+            recurringDebtsList.loadRec();
         }
     }
 
@@ -120,8 +187,14 @@ public class Input {
 
     }
 
-    public void printList() {
-        for (Debt debt : recurringDebtsList.getListOfDebt()) {
+    public void printRegularList() {
+        for (Debt debt : normalUrgentDebtsList.getListOfDebt()) {
+            System.out.println(debt.reminder());
+        }
+    }
+
+    public void printRecurringList() {
+        for (Debt debt : recurringDebtsList.getListOfDebtRe()) {
             System.out.println(debt.reminder());
         }
     }
