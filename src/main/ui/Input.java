@@ -3,9 +3,6 @@ package ui;
 import info.*;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Input {
@@ -63,7 +60,7 @@ public class Input {
     private void logRecurrentResult() {
         try {
             recurringDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
-            recurringDebtsList.addListRe(normalUrgentDebtsList, debt);
+            recurringDebtsList.addMap(normalUrgentDebtsList, debt);
         } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
             askDebtType();
@@ -77,7 +74,7 @@ public class Input {
     private void logRegularResult() {
         try {
             normalUrgentDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
-            normalUrgentDebtsList.addList(debt);
+            normalUrgentDebtsList.addMap(debt);
         } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
             /*userInput();*/
@@ -135,7 +132,7 @@ public class Input {
 
     private void deleteDebt(String ans) {
         if (normalUrgentDebtsList.getMapOfDebts().containsKey(ans)) {
-            normalUrgentDebtsList.removeList(recurringDebtsList, normalUrgentDebtsList.getSpecificDebt(ans));
+            normalUrgentDebtsList.removeValue(recurringDebtsList, normalUrgentDebtsList.getSpecificDebt(ans));
             System.out.println("That debt is paid off!");
         } else {
             System.out.println("That debt doesn't exist!");

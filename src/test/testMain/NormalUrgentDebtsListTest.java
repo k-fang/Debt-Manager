@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,6 +30,7 @@ public class NormalUrgentDebtsListTest {
         //singleDebtsList = new NormalUrgentDebtsList();
         recurringDebtsList = new RecurringDebtsList();
         regularDebtsList.logResult(normalDebt, 5, "Owe", "Kevin", "No due date");
+        regularDebtsList.addMap(normalDebt);
         urgentDebt = new UrgentDebt();
         /*regularDebtsList.logResult(urgentDebt, 7, "Owe", "Joe", "October");
         regularDebtsList.addList(urgentDebt);
@@ -61,8 +61,11 @@ public class NormalUrgentDebtsListTest {
     @Test
     public void logResultTestMultiple() throws IntException, OweException {
         regularDebtsList.logResult(urgentDebt, 7, "Owe", "Joe", "October");
+        regularDebtsList.addMap(urgentDebt);
         assertEquals(regularDebtsList.getSpecificDebt("Kevin"), normalDebt);
         assertEquals(regularDebtsList.getSpecificDebt("Joe"), urgentDebt);
+        regularDebtsList.removeValue(recurringDebtsList, normalDebt);
+        assertFalse(regularDebtsList.getMapOfDebts().containsKey("Kevin"));
     }
 
 
@@ -70,6 +73,7 @@ public class NormalUrgentDebtsListTest {
     public void testExceptionThrowsIntegerException() {
         try {
             regularDebtsList.logResult(urgentDebtExceptionTest, -5, "Owe", "Bob", "Nov");
+            regularDebtsList.addMap(urgentDebtExceptionTest);
             fail();
         } catch (IntException e) {
 
@@ -82,6 +86,7 @@ public class NormalUrgentDebtsListTest {
     public void testExceptionThrowsOweOrOwedException() {
         try {
             regularDebtsList.logResult(urgentDebtExceptionTest, 10, "Dab", "Bobby", "Nov");
+            regularDebtsList.addMap(urgentDebtExceptionTest);
             fail();
         } catch (IntException e) {
             fail();
@@ -93,6 +98,7 @@ public class NormalUrgentDebtsListTest {
     public void testExceptionDoesNotThrow() {
         try {
             regularDebtsList.logResult(urgentDebtExceptionTest, 10, "owe", "Bobby", "Nov");
+            regularDebtsList.addMap(urgentDebtExceptionTest);
         } catch (IntException e) {
             fail();
         } catch (OweException e) {
@@ -113,6 +119,7 @@ public class NormalUrgentDebtsListTest {
     public void testAddOnePersonInList() throws ClassNotFoundException, IOException, IntException, OweException {
         regularDebtsList.load();
         regularDebtsList.logResult(urgentDebt, 7, "Owe", "Joe", "October");
+        regularDebtsList.addMap(urgentDebt);
         assertEquals(regularDebtsList.getSpecificDebt("Kevin").getWho(), "Kevin");
         assertEquals(regularDebtsList.getSpecificDebt("Joe").getWho(), "Joe");
     }

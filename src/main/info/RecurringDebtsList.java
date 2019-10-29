@@ -1,7 +1,6 @@
 package info;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class RecurringDebtsList extends DebtsList {
@@ -19,7 +18,7 @@ public class RecurringDebtsList extends DebtsList {
         debt.setOweOrOwed(o);
         debt.setDueDate(d);
         debt.setWho(w);
-        mapOfRecurringDebts.put(w, debt);
+        //addMap(regularDebtsList, debt);
         /*addListRe(debt);*/
     }
 
@@ -36,18 +35,18 @@ public class RecurringDebtsList extends DebtsList {
     // REQUIRES: Debt
     // MODIFIES: this
     // EFFECTS: adds a new debt to listOfRecurringDebt
-    public void addListRe(NormalUrgentDebtsList ndl, Debt debt) {
+    public void addMap(NormalUrgentDebtsList ndl, Debt debt) {
         mapOfRecurringDebts.put(debt.getWho(), debt);
-        ndl.addList(debt);
+        ndl.addMap(debt);
 
     }
 
 
     /*@Override*/
-    public void removeList(NormalUrgentDebtsList ndl, Debt debt) {
+    public void removeValue(NormalUrgentDebtsList ndl, Debt debt) {
         if (mapOfRecurringDebts.containsKey(debt.getWho())) {
             mapOfRecurringDebts.remove(debt.getWho());
-            ndl.removeList(this, debt);
+            ndl.removeValue(this, debt);
         }
     }
 

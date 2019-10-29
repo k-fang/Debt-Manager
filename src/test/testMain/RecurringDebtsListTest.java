@@ -4,9 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,6 +28,7 @@ public class RecurringDebtsListTest {
         checkRecurringDebt = new RecurringDebt();
         recurringDebtsList = new RecurringDebtsList();
         recurringDebtsList.logResult(recurringDebt, 5, "Owe", "Bob", "No due date");
+        recurringDebtsList.addMap(regularDebtsList, recurringDebt);
 
         //recurringDebtsList.addListRe(regularDebtsList, recurringDebt);
         recurringDebtsList.save();
@@ -45,8 +44,11 @@ public class RecurringDebtsListTest {
     @Test
     public void logResultTestMultiple() throws IntException, OweException {
         recurringDebtsList.logResult(checkRecurringDebt, 10, "Owe", "John", "No due date");
+        recurringDebtsList.addMap(regularDebtsList, checkRecurringDebt);
         assertEquals(recurringDebtsList.getSpecificDebt("Bob"), recurringDebt);
         assertEquals(recurringDebtsList.getSpecificDebt("John"), checkRecurringDebt);
+        recurringDebtsList.removeValue(regularDebtsList, recurringDebt);
+        assertFalse(recurringDebtsList.getMapOfDebts().containsKey("Bob"));
     }
 
 
@@ -54,6 +56,7 @@ public class RecurringDebtsListTest {
     public void testExceptionThrowsIntegerException() {
         try {
             recurringDebtsList.logResult(checkRecurringDebt, -5, "Owe", "Bob", "Nov");
+            recurringDebtsList.addMap(regularDebtsList, checkRecurringDebt);
             fail();
         } catch (IntException e) {
 
@@ -66,6 +69,7 @@ public class RecurringDebtsListTest {
     public void testExceptionThrowsOweOrOwedException() {
         try {
             recurringDebtsList.logResult(checkRecurringDebt, 10, "Dab", "Bobby", "Nov");
+            recurringDebtsList.addMap(regularDebtsList, checkRecurringDebt);
             fail();
         } catch (IntException e) {
             fail();
@@ -77,6 +81,7 @@ public class RecurringDebtsListTest {
     public void testExceptionDoesNotThrow() {
         try {
             recurringDebtsList.logResult(checkRecurringDebt, 10, "owe", "Bobby", "Nov");
+            recurringDebtsList.addMap(regularDebtsList, checkRecurringDebt);
         } catch (IntException e) {
             fail();
         } catch (OweException e) {
@@ -99,6 +104,7 @@ public class RecurringDebtsListTest {
         recurringDebtsList.load();
 
         recurringDebtsList.logResult(checkRecurringDebt, 10, "Owe", "John", "No due date");
+        recurringDebtsList.addMap(regularDebtsList, checkRecurringDebt);
         assertEquals(recurringDebtsList.getSpecificDebt("Bob").getWho(), "Bob");
         assertEquals(recurringDebtsList.getSpecificDebt("John").getWho(), "John");
 
