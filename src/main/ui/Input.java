@@ -202,17 +202,14 @@ public class Input {
             amount = input.nextInt();
             System.out.println("Who owes you this money?");
             who = input.next();
-
-
-        } else {
+        } else if (oweOrOwed.equalsIgnoreCase("Owe")) {
             System.out.println("Please enter the amount you owe (No dollar signs please)");
             amount = input.nextInt();
             System.out.println("Who do you owe this money to?");
             who = input.next();
-
-
+        } else {
+            System.out.println("You didn't enter a recognized answer!");
         }
-
     }
 
     public void printRegularList() {
