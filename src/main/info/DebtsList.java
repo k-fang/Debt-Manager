@@ -2,18 +2,23 @@ package info;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class DebtsList implements Serializable, Loadable, Saveable {
 
-    protected ArrayList<Debt> listOfDebt;
-    protected ArrayList<Debt> listOfRecurringDebt;
+    /*protected ArrayList<Debt> listOfDebt;
+    protected ArrayList<Debt> listOfRecurringDebt;*/
     protected NormalUrgentDebtsList regularDebtsList;
     protected RecurringDebtsList recurringDebtsList;
-
+    protected Map<String, Debt> mapOfDebts;
+    protected Map<String, Debt> mapOfRecurringDebts;
 
     public DebtsList() {
-        listOfDebt = new ArrayList<>();
-        listOfRecurringDebt = new ArrayList<>();
+        /*listOfDebt = new ArrayList<>();
+        listOfRecurringDebt = new ArrayList<>();*/
+        mapOfDebts = new HashMap<>();
+        mapOfRecurringDebts = new HashMap<>();
     }
 
 
@@ -35,10 +40,12 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
 
     }
 */
+    public abstract Map<String, Debt> getMapOfDebts();
 
-    public Debt getSpecificDebt(int i) {
-        return listOfDebt.get(i - 1);
-    }
+    public abstract Debt getSpecificDebt(String s);
+    //{
+      //  return mapOfDebts.get(s);
+    //}
 
 
 
@@ -65,7 +72,7 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
 
 
     //EFFECTS: returns listOfDebt
-    public abstract ArrayList<Debt> getListOfDebt(); /*{
+   /* public abstract ArrayList<Debt> getListOfDebt();*/ /*{
         return listOfDebt;
     }
 

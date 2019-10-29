@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,18 +20,19 @@ public class NormalUrgentDebtsListTest {
     NormalUrgentDebtsList regularDebtsList;
     NormalUrgentDebtsList singleDebtsList;
     RecurringDebtsList recurringDebtsList;
+    Map<String, Debt> mapOfDebts;
+    Map<String, Debt> mapOfRecurringDebts;
 
 
     @BeforeEach
     public void setUp() throws IntException, OweException, IOException {
         normalDebt = new NormalDebt();
         regularDebtsList = new NormalUrgentDebtsList();
-        singleDebtsList = new NormalUrgentDebtsList();
+        //singleDebtsList = new NormalUrgentDebtsList();
         recurringDebtsList = new RecurringDebtsList();
-        singleDebtsList.logResult(normalDebt, 5, "Owe", "Kevin", "No due date");
-        singleDebtsList.addList(normalDebt);
+        regularDebtsList.logResult(normalDebt, 5, "Owe", "Kevin", "No due date");
         urgentDebt = new UrgentDebt();
-        regularDebtsList.logResult(urgentDebt, 7, "Owe", "Joe", "October");
+        /*regularDebtsList.logResult(urgentDebt, 7, "Owe", "Joe", "October");
         regularDebtsList.addList(urgentDebt);
         normalDebtTwo = new NormalDebt();
         regularDebtsList.logResult(normalDebtTwo, 5, "Owed", "John", "No due date");
@@ -38,7 +40,8 @@ public class NormalUrgentDebtsListTest {
         urgentDebtTwo = new UrgentDebt();
         regularDebtsList.logResult(urgentDebtTwo, 10, "Owed", "Bob", "November");
         urgentDebtExceptionTest = new UrgentDebt();
-        regularDebtsList.addList(urgentDebtTwo);
+        regularDebtsList.addList(urgentDebtTwo);*/
+        urgentDebtExceptionTest = new UrgentDebt();
         regularDebtsList.save();
 
 
@@ -51,24 +54,15 @@ public class NormalUrgentDebtsListTest {
    //test for one person in list
     @Test
     public void logResultTest() {
-        ArrayList<Debt> list = singleDebtsList.getListOfDebt();
-        assertEquals(1, list.size());
-        assertTrue(list.contains(normalDebt));
+        assertEquals(regularDebtsList.getSpecificDebt("Kevin"), normalDebt);
     }
 
     //test for two people in list
     @Test
-    public void logResultTestMultiple() {
-
-        ArrayList<Debt> list = regularDebtsList.getListOfDebt();
-        assertEquals(3, list.size());
-        assertTrue(list.contains(normalDebtTwo));
-        assertTrue(list.contains(urgentDebt));
-        assertTrue(list.contains(urgentDebtTwo));
-        regularDebtsList.removeList(recurringDebtsList, normalDebtTwo);
-        assertEquals(2, list.size());
-        assertTrue(list.contains(urgentDebt));
-        assertTrue(list.contains(urgentDebtTwo));
+    public void logResultTestMultiple() throws IntException, OweException {
+        regularDebtsList.logResult(urgentDebt, 7, "Owe", "Joe", "October");
+        assertEquals(regularDebtsList.getSpecificDebt("Kevin"), normalDebt);
+        assertEquals(regularDebtsList.getSpecificDebt("Joe"), urgentDebt);
     }
 
 
@@ -110,11 +104,7 @@ public class NormalUrgentDebtsListTest {
     // test list saves a person and brings the list back
     public void testBringListBack() throws ClassNotFoundException, IOException {
         regularDebtsList.load();
-        ArrayList<Debt> listOfDebt = regularDebtsList.getListOfDebt();
-        Debt firstPerson = listOfDebt.get(0);
-        String firstPersonName = firstPerson.getWho();
-        assertEquals(3, listOfDebt.size());
-        assertTrue(firstPersonName.equals("Joe"));
+        assertEquals(regularDebtsList.getSpecificDebt("Kevin").getWho(), "Kevin");
     }
 
 
@@ -122,12 +112,8 @@ public class NormalUrgentDebtsListTest {
     // test list saves a person, brings the list back, and adds another person
     public void testAddOnePersonInList() throws ClassNotFoundException, IOException, IntException, OweException {
         regularDebtsList.load();
-        regularDebtsList.addList(normalDebt);
-        ArrayList<Debt> listOfDebt = regularDebtsList.getListOfDebt();
-        Debt firstPerson = listOfDebt.get(0);
-        String firstPersonName = firstPerson.getWho();
-        assertEquals(4, listOfDebt.size());
-        assertTrue(listOfDebt.contains(normalDebt));
-        assertTrue(firstPersonName.equals("Joe"));
+        regularDebtsList.logResult(urgentDebt, 7, "Owe", "Joe", "October");
+        assertEquals(regularDebtsList.getSpecificDebt("Kevin").getWho(), "Kevin");
+        assertEquals(regularDebtsList.getSpecificDebt("Joe").getWho(), "Joe");
     }
 }

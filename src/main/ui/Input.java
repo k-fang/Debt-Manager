@@ -3,6 +3,9 @@ package ui;
 import info.*;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Input {
@@ -94,10 +97,10 @@ public class Input {
         if (answer.equalsIgnoreCase("view")) {
             System.out.println("Would you like to view your recurring or all your debts? (Type 'Recurring' or 'All')");
             String answertwo = input.next();
-            if (answertwo.equalsIgnoreCase("all") && !normalUrgentDebtsList.getListOfDebt().isEmpty()) {
-                printRegularList();
-            } else if (answertwo.equalsIgnoreCase("recurring") && !recurringDebtsList.getListOfDebt().isEmpty()) {
-                printRecurringList();
+            if (answertwo.equalsIgnoreCase("all") && !normalUrgentDebtsList.getMapOfDebts().isEmpty()) {
+                printRegularMap();
+            } else if (answertwo.equalsIgnoreCase("recurring") && !recurringDebtsList.getMapOfDebts().isEmpty()) {
+                printRecurringMap();
             } else if (!answertwo.equalsIgnoreCase("recurring") && !answertwo.equalsIgnoreCase("all")) {
                 System.out.println("You didn't type one of the two options.");
             } else {
@@ -108,15 +111,18 @@ public class Input {
         }
     }
 
+
+
     private void askCreateOrDeleteDebt(String answer) {
         if (answer.equalsIgnoreCase("create")) {
             askDebtType();
         } else if (answer.equalsIgnoreCase("delete")) {
-            if (!normalUrgentDebtsList.getListOfDebt().isEmpty()) {
+            if (!normalUrgentDebtsList.getMapOfDebts().isEmpty()) {
                 Scanner input = new Scanner(System.in);
-                System.out.println("Type the number next to the debt you would like to delete, or 0 to cancel.");
-                printRegularList();
-                int ans = input.nextInt();
+                System.out.println("Type the name of the person's debt you want to delete. (Case matters)");
+                //printRegularList();
+                printRegularMap();
+                String ans = input.next();
                 deleteDebt(ans);
             } else {
                 System.out.println("There are no debts to delete.");
@@ -127,9 +133,13 @@ public class Input {
 
     }
 
-    private void deleteDebt(int ans) {
-        normalUrgentDebtsList.removeList(recurringDebtsList, normalUrgentDebtsList.getSpecificDebt(ans));
-        System.out.println("That debt is paid off!");
+    private void deleteDebt(String ans) {
+        if (normalUrgentDebtsList.getMapOfDebts().containsKey(ans)) {
+            normalUrgentDebtsList.removeList(recurringDebtsList, normalUrgentDebtsList.getSpecificDebt(ans));
+            System.out.println("That debt is paid off!");
+        } else {
+            System.out.println("That debt doesn't exist!");
+        }
     }
 
 
@@ -212,17 +222,38 @@ public class Input {
         }
     }
 
-    public void printRegularList() {
+    /*public void printRegularList() {
         int i = 1;
         for (Debt debt : normalUrgentDebtsList.getListOfDebt()) {
             System.out.println(i + ". " + debt.reminder());
             i = i + 1;
         }
+    }*/
+
+    public void printRegularMap() {
+        int i = 1;
+        /*Iterator it = normalUrgentDebtsList.getMapOfDebts().entrySet().iterator():
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            Debt d = pair.getValue();
+            System.out.println(d.reminder());*/
+        for (Debt d : normalUrgentDebtsList.getMapOfDebts().values()) {
+            System.out.println(i + ". " + d.reminder());
+            i = i + 1;
+        }
     }
 
-    public void printRecurringList() {
+   /* public void printRecurringList() {
         int i = 1;
         for (Debt debt : recurringDebtsList.getListOfDebt()) {
+            System.out.println(i + ". " + debt.reminder());
+            i = i + 1;
+        }
+    }*/
+
+    private void printRecurringMap() {
+        int i = 1;
+        for (Debt debt : recurringDebtsList.getMapOfDebts().values()) {
             System.out.println(i + ". " + debt.reminder());
             i = i + 1;
         }

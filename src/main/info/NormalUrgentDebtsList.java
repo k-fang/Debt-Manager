@@ -2,6 +2,7 @@ package info;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class NormalUrgentDebtsList extends DebtsList {
 
@@ -16,41 +17,52 @@ public class NormalUrgentDebtsList extends DebtsList {
             throw new OweException();
         }
         debt.setOweOrOwed(o);
-        debt.setWho(w);
         debt.setDueDate(d);
+        debt.setWho(w);
+        mapOfDebts.put(w, debt);
        /* addList(debt);*/
 
+    }
+
+    @Override
+    public Map<String, Debt> getMapOfDebts() {
+        return mapOfDebts;
+    }
+
+    @Override
+    public Debt getSpecificDebt(String s) {
+        return mapOfDebts.get(s);
     }
 
     // REQUIRES: Debt
     // MODIFIES: this
     // EFFECTS: adds a new debt to listOfDebt
     public void addList(Debt debt) {
-        if (!listOfDebt.contains(debt)) {
-            listOfDebt.add(debt);
+        if (!mapOfDebts.containsKey(debt.getWho())) {
+            mapOfDebts.put(debt.getWho(), debt);
         }
     }
 
     /*@Override*/
     public void removeList(RecurringDebtsList rdl, Debt debt) {
-        if (listOfDebt.contains(debt)) {
-            listOfDebt.remove(debt);
+        if (mapOfDebts.containsKey(debt.getWho())) {
+            mapOfDebts.remove(debt.getWho());
             rdl.removeList(this, debt);
         }
 
     }
 
-    @Override
+   /* @Override
     public ArrayList<Debt> getListOfDebt() {
         return listOfDebt;
-    }
+    }*/
 
     //EFFECTS: saves listofDebt to a file
     @Override
     public void save() throws IOException {
         FileOutputStream fos = new FileOutputStream("t.tmp");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(listOfDebt);
+        oos.writeObject(mapOfDebts);
         oos.close();
     }
 
@@ -60,7 +72,7 @@ public class NormalUrgentDebtsList extends DebtsList {
         FileInputStream fis = new FileInputStream("t.tmp");
         ObjectInputStream ois = new ObjectInputStream(fis);
         // person = (Person) ois.readObject();
-        listOfDebt = (ArrayList<Debt>) ois.readObject();
+        mapOfDebts = (Map<String, Debt>) ois.readObject();
         ois.close();
     }
 

@@ -2,6 +2,7 @@ package info;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class RecurringDebtsList extends DebtsList {
 
@@ -16,17 +17,27 @@ public class RecurringDebtsList extends DebtsList {
             throw new OweException();
         }
         debt.setOweOrOwed(o);
-        debt.setWho(w);
         debt.setDueDate(d);
+        debt.setWho(w);
+        mapOfRecurringDebts.put(w, debt);
         /*addListRe(debt);*/
+    }
 
+    @Override
+    public Map<String, Debt> getMapOfDebts() {
+        return mapOfRecurringDebts;
+    }
+
+    @Override
+    public Debt getSpecificDebt(String s) {
+        return mapOfRecurringDebts.get(s);
     }
 
     // REQUIRES: Debt
     // MODIFIES: this
     // EFFECTS: adds a new debt to listOfRecurringDebt
     public void addListRe(NormalUrgentDebtsList ndl, Debt debt) {
-        listOfRecurringDebt.add(debt);
+        mapOfRecurringDebts.put(debt.getWho(), debt);
         ndl.addList(debt);
 
     }
@@ -34,23 +45,23 @@ public class RecurringDebtsList extends DebtsList {
 
     /*@Override*/
     public void removeList(NormalUrgentDebtsList ndl, Debt debt) {
-        if (listOfRecurringDebt.contains(debt)) {
-            listOfRecurringDebt.remove(debt);
+        if (mapOfRecurringDebts.containsKey(debt.getWho())) {
+            mapOfRecurringDebts.remove(debt.getWho());
             ndl.removeList(this, debt);
         }
     }
 
-    @Override
+    /*@Override
     public ArrayList<Debt> getListOfDebt() {
-        return listOfRecurringDebt;
-    }
+        return listOfRecurringDebt;*/
+
 
     //EFFECTS: saves listofDebt to a file
     @Override
     public void save() throws IOException {
         FileOutputStream fos = new FileOutputStream("t.tmp2");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(listOfRecurringDebt);
+        oos.writeObject(mapOfRecurringDebts);
         oos.close();
     }
 
@@ -60,7 +71,7 @@ public class RecurringDebtsList extends DebtsList {
         FileInputStream fis = new FileInputStream("t.tmp2");
         ObjectInputStream ois = new ObjectInputStream(fis);
         // person = (Person) ois.readObject();
-        listOfRecurringDebt = (ArrayList<Debt>) ois.readObject();
+        mapOfRecurringDebts = (Map<String, Debt>) ois.readObject();
         ois.close();
     }
     // taken from https://stackoverflow.com/questions/16111496/
