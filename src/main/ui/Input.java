@@ -93,12 +93,12 @@ public class Input {
         String answer = input.next();
         if (answer.equalsIgnoreCase("view")) {
             System.out.println("Would you like to view your recurring or all your debts? (Type 'Recurring' or 'All')");
-            String answertwo = input.next();
-            if (answertwo.equalsIgnoreCase("all") && !normalUrgentDebtsList.getListOfDebt().isEmpty()) {
+            String answerTwo = input.next();
+            if (answerTwo.equalsIgnoreCase("all") && !normalUrgentDebtsList.getListOfDebt().isEmpty()) {
                 printRegularList();
-            } else if (answertwo.equalsIgnoreCase("recurring") && !recurringDebtsList.getListOfDebt().isEmpty()) {
+            } else if (answerTwo.equalsIgnoreCase("recurring") && !recurringDebtsList.getListOfDebt().isEmpty()) {
                 printRecurringList();
-            } else if (!answertwo.equalsIgnoreCase("recurring") && !answertwo.equalsIgnoreCase("all")) {
+            } else if (!answerTwo.equalsIgnoreCase("recurring") && !answerTwo.equalsIgnoreCase("all")) {
                 System.out.println("You didn't type one of the two options.");
             } else {
                 System.out.println("You have no debts in that category!");

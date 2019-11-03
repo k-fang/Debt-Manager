@@ -4,22 +4,10 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class NormalUrgentDebtsList extends DebtsList {
+    private ArrayList<Debt> listOfDebt;
 
-    // MODIFIES: Debt, this
-    // EFFECTS: sets passed parameters to Debt, and adds debt to listOfDebt
-    public void logResult(Debt debt, int amt, String o, String w, String d) throws IntException, OweException {
-        if (amt <= 0) {
-            throw new IntException();
-        }
-        debt.setAmount(amt);
-        if (!o.equalsIgnoreCase("Owe") && !o.equalsIgnoreCase("Owed")) {
-            throw new OweException();
-        }
-        debt.setOweOrOwed(o);
-        debt.setWho(w);
-        debt.setDueDate(d);
-       /* addList(debt);*/
-
+    public NormalUrgentDebtsList() {
+        listOfDebt = new ArrayList<>();
     }
 
     // REQUIRES: Debt
@@ -37,13 +25,17 @@ public class NormalUrgentDebtsList extends DebtsList {
             listOfDebt.remove(debt);
             rdl.removeList(this, debt);
         }
-
     }
 
     @Override
     public ArrayList<Debt> getListOfDebt() {
         return listOfDebt;
     }
+
+    public Debt getSpecificDebt(int i) {
+        return listOfDebt.get(i - 1);
+    }
+
 
     //EFFECTS: saves listofDebt to a file
     @Override

@@ -9,6 +9,15 @@ public abstract class Debt implements Serializable {
     protected String who;
     protected String dueDate;
 
+
+    //EFFECTS: logs parameters to debt fields
+    public void logResult(int amt, String o, String w, String d) {
+        setAmount(amt);
+        setOweOrOwed(o);
+        setWho(w);
+        setDueDate(d);
+    }
+
     //EFFECTS: returns int amount of money owe or owed
     public int getAmount() {
         return amount;
@@ -46,9 +55,6 @@ public abstract class Debt implements Serializable {
         this.who = who;
     }
 
-    /*protected abstract void setDueDate(String dueDate);
-
-    protected abstract String getDueDate();*/
 
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
@@ -60,5 +66,4 @@ public abstract class Debt implements Serializable {
 
 }
 
-// MAKE SOMETHING TODAY THAT WHEN CALLED RETURNS FOR PERSON, OWED THIS AMOUNT
-// BUT FOR URGENT PERSON SAY OWED THIS AMOUNT BY DATE
+

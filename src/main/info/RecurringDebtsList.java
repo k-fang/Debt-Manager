@@ -4,23 +4,12 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class RecurringDebtsList extends DebtsList {
+    private ArrayList<Debt> listOfRecurringDebt;
 
-    // MODIFIES: Debt, this
-    // EFFECTS: sets passed parameters to Debt, and adds debt to listOfDebt
-    public void logResult(Debt debt, int amt, String o, String w, String d) throws IntException, OweException {
-        if (amt <= 0) {
-            throw new IntException();
-        }
-        debt.setAmount(amt);
-        if (!o.equalsIgnoreCase("Owe") && !o.equalsIgnoreCase("Owed")) {
-            throw new OweException();
-        }
-        debt.setOweOrOwed(o);
-        debt.setWho(w);
-        debt.setDueDate(d);
-        /*addListRe(debt);*/
-
+    public RecurringDebtsList() {
+        listOfRecurringDebt = new ArrayList<>();
     }
+
 
     // REQUIRES: Debt
     // MODIFIES: this
@@ -28,11 +17,8 @@ public class RecurringDebtsList extends DebtsList {
     public void addListRe(NormalUrgentDebtsList ndl, Debt debt) {
         listOfRecurringDebt.add(debt);
         ndl.addList(debt);
-
     }
 
-
-    /*@Override*/
     public void removeList(NormalUrgentDebtsList ndl, Debt debt) {
         if (listOfRecurringDebt.contains(debt)) {
             listOfRecurringDebt.remove(debt);
