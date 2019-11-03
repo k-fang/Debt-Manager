@@ -19,6 +19,8 @@ public class RecurringDebtsList extends DebtsList {
         ndl.addList(debt);
     }
 
+    //MODIFIES: this
+    //EFFECTS: removes a given debt from the listOfRecurringDebt
     public void removeList(NormalUrgentDebtsList ndl, Debt debt) {
         if (listOfRecurringDebt.contains(debt)) {
             listOfRecurringDebt.remove(debt);
@@ -26,12 +28,13 @@ public class RecurringDebtsList extends DebtsList {
         }
     }
 
+    //EFFECTS: returns listOfRecurringDebt
     @Override
     public ArrayList<Debt> getListOfDebt() {
         return listOfRecurringDebt;
     }
 
-    //EFFECTS: saves listofDebt to a file
+    //EFFECTS: saves listOfDebt to a file
     @Override
     public void save() throws IOException {
         FileOutputStream fos = new FileOutputStream("t.tmp2");

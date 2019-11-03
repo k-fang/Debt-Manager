@@ -19,7 +19,8 @@ public class NormalUrgentDebtsList extends DebtsList {
         }
     }
 
-    /*@Override*/
+    //MODIFIES: this
+    //EFFECTS: removes a given debt from the listofDebt
     public void removeList(RecurringDebtsList rdl, Debt debt) {
         if (listOfDebt.contains(debt)) {
             listOfDebt.remove(debt);
@@ -27,11 +28,13 @@ public class NormalUrgentDebtsList extends DebtsList {
         }
     }
 
+    //EFFECTS: returns listofDebt
     @Override
     public ArrayList<Debt> getListOfDebt() {
         return listOfDebt;
     }
 
+    //EFFECTS: gets the ith debt in a list
     public Debt getSpecificDebt(int i) {
         return listOfDebt.get(i - 1);
     }

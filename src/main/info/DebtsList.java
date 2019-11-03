@@ -16,7 +16,7 @@ public abstract class DebtsList implements Serializable, Loadable, Saveable {
         //listOfRecurringDebt = new ArrayList<>();
     }
 
-    // MODIFIES: Debt, this
+    // MODIFIES: Debt
     // EFFECTS: sets passed parameters to Debt, and adds debt to listOfDebt
     public void logResult(Debt debt, int amt, String o, String w, String d) throws IntException, OweException {
         if (amt <= 0) {
