@@ -43,14 +43,24 @@ public class Input {
         askLoadOrNew();
         while (true) {
             askViewOrInput();
-            System.out.println("Would you like to continue? (Type Yes or No)");
+            System.out.println("Would you like to continue? (Type 'Yes' or 'No')");
             String done = input.next();
             if (done.equalsIgnoreCase("No")) {
                 break;
             }
         }
+        askSessionStatistics();
         normalUrgentDebtsList.save();
         recurringDebtsList.save();
+    }
+
+    private void askSessionStatistics() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Would you like to see your session statistics? (Type 'Yes' or 'No')");
+        String answer = input.next();
+        if (answer.equalsIgnoreCase("Yes")) {
+            normalUrgentDebtsList.observersPrintStatistics();
+        }
     }
 
 
@@ -60,6 +70,7 @@ public class Input {
             recurringDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             recurringDebtsList.addListRe(normalUrgentDebtsList, debt);
             recurringDebtsList.notifyObservers();
+            recurringDebtsList.observersAddDebt();
         } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
             askDebtType();
@@ -76,6 +87,7 @@ public class Input {
             normalUrgentDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             normalUrgentDebtsList.addList(debt);
             normalUrgentDebtsList.notifyObservers();
+            normalUrgentDebtsList.observersAddDebt();
         } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
             /*userInput();*/
@@ -140,6 +152,7 @@ public class Input {
         if (ans > 0 && ans < normalUrgentDebtsList.getListOfDebt().size()) {
             normalUrgentDebtsList.removeList(recurringDebtsList, normalUrgentDebtsList.getSpecificDebt(ans));
             System.out.println("That debt is paid off!");
+            normalUrgentDebtsList.observersAddDeletedDebt();
         }
     }
 

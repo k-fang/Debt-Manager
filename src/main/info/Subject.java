@@ -27,4 +27,22 @@ public abstract class Subject {
             observer.update();
         }
     }
+
+    public void observersAddDebt() {
+        for (ConfirmationObserver observer : confirmationObservers) {
+            observer.addDebt();
+        }
+    }
+
+    public void observersAddDeletedDebt() {
+        for (ConfirmationObserver observer : confirmationObservers) {
+            observer.addDeletedDebt();
+        }
+    }
+
+    public void observersPrintStatistics() {
+        for (ConfirmationObserver observer : confirmationObservers) {
+            observer.printStatistics();
+        }
+    }
 }
