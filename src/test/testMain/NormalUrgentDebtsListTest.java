@@ -77,8 +77,13 @@ public class NormalUrgentDebtsListTest {
     @Test
     public void observerTest() {
         regularDebtsList.addObserver(observer);
+        assertTrue(regularDebtsList.getObservers().contains(observer));
         regularDebtsList.notifyObservers();
         regularDebtsList.removeObserver(observer);
+        regularDebtsList.observersPrintStatistics();
+        regularDebtsList.observersAddDebt();
+        regularDebtsList.observersAddDeletedDebt();
+        assertFalse(regularDebtsList.getObservers().contains(observer));
     }
 
     @Test

@@ -45,4 +45,8 @@ public abstract class Subject {
             observer.printStatistics();
         }
     }
+
+    public List<ConfirmationObserver> getObservers() {
+        return confirmationObservers;
+    }
 }
