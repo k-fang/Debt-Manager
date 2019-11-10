@@ -1,6 +1,7 @@
 package ui;
 
 import info.*;
+import network.ReadFromWeb;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -13,10 +14,13 @@ public class Input {
     private String who;
     private String oweOrOwed;
     private String dueDate;
+    private static ReadFromWeb readFromWeb;
 
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
+        readFromWeb = new ReadFromWeb();
+        readFromWeb.print();
         new Input();
 
 

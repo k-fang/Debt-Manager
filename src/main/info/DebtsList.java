@@ -3,7 +3,7 @@ package info;
 import java.io.*;
 import java.util.ArrayList;
 
-public abstract class DebtsList implements Serializable, Loadable, Saveable {
+public abstract class DebtsList extends Subject implements Serializable, Loadable, Saveable {
 
     //protected ArrayList<Debt> listOfDebt;
   //  protected ArrayList<Debt> listOfRecurringDebt;
