@@ -15,6 +15,7 @@ public class Input {
     private String oweOrOwed;
     private String dueDate;
     private static ReadFromWeb readFromWeb;
+    private ConfirmationObserver observer;
 
 
 
@@ -29,6 +30,9 @@ public class Input {
     public Input() throws IOException, ClassNotFoundException {
         normalUrgentDebtsList = new NormalUrgentDebtsList();
         recurringDebtsList = new RecurringDebtsList();
+        observer = new ConfirmationObserver();
+        normalUrgentDebtsList.addObserver(observer);
+        recurringDebtsList.addObserver(observer);
         dueDate = "";
         run();
     }
@@ -55,6 +59,7 @@ public class Input {
         try {
             recurringDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             recurringDebtsList.addListRe(normalUrgentDebtsList, debt);
+            recurringDebtsList.notifyObservers();
         } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
             askDebtType();
@@ -70,6 +75,7 @@ public class Input {
         try {
             normalUrgentDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             normalUrgentDebtsList.addList(debt);
+            normalUrgentDebtsList.notifyObservers();
         } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
             /*userInput();*/
