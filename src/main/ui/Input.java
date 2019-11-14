@@ -1,7 +1,6 @@
 package ui;
 
 import info.*;
-import network.ReadFromWeb;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -14,14 +13,10 @@ public class Input {
     private String who;
     private String oweOrOwed;
     private String dueDate;
-    private static ReadFromWeb readFromWeb;
-    private ConfirmationObserver observer;
 
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        readFromWeb = new ReadFromWeb();
-        readFromWeb.print();
         new Input();
 
 
@@ -30,9 +25,6 @@ public class Input {
     public Input() throws IOException, ClassNotFoundException {
         normalUrgentDebtsList = new NormalUrgentDebtsList();
         recurringDebtsList = new RecurringDebtsList();
-        observer = new ConfirmationObserver();
-        normalUrgentDebtsList.addObserver(observer);
-        recurringDebtsList.addObserver(observer);
         dueDate = "";
         run();
     }
@@ -43,34 +35,22 @@ public class Input {
         askLoadOrNew();
         while (true) {
             askViewOrInput();
-            System.out.println("Would you like to continue? (Type 'Yes' or 'No')");
+            System.out.println("Would you like to continue? (Type Yes or No)");
             String done = input.next();
             if (done.equalsIgnoreCase("No")) {
                 break;
             }
         }
-        askSessionStatistics();
         normalUrgentDebtsList.save();
         recurringDebtsList.save();
     }
-
-    private void askSessionStatistics() {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Would you like to see your session statistics? (Type 'Yes' or 'No')");
-        String answer = input.next();
-        if (answer.equalsIgnoreCase("Yes")) {
-            normalUrgentDebtsList.observersPrintStatistics();
-        }
-    }
-
+    /////
 
     //EFFECTS: logs the recurring debt to a list of recurring debts, catching exception if parameters error
     private void logRecurrentResult() {
         try {
             recurringDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             recurringDebtsList.addListRe(normalUrgentDebtsList, debt);
-            recurringDebtsList.notifyObservers();
-            recurringDebtsList.observersAddDebt();
         } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
             askDebtType();
@@ -86,8 +66,6 @@ public class Input {
         try {
             normalUrgentDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             normalUrgentDebtsList.addList(debt);
-            normalUrgentDebtsList.notifyObservers();
-            normalUrgentDebtsList.observersAddDebt();
         } catch (IntException e) {
             System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
             /*userInput();*/
@@ -152,7 +130,6 @@ public class Input {
         if (ans > 0 && ans < normalUrgentDebtsList.getListOfDebt().size()) {
             normalUrgentDebtsList.removeList(recurringDebtsList, normalUrgentDebtsList.getSpecificDebt(ans));
             System.out.println("That debt is paid off!");
-            normalUrgentDebtsList.observersAddDeletedDebt();
         }
     }
 
