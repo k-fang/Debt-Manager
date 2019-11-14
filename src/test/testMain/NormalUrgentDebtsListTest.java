@@ -19,7 +19,7 @@ public class NormalUrgentDebtsListTest {
     NormalUrgentDebtsList regularDebtsList;
     NormalUrgentDebtsList singleDebtsList;
     RecurringDebtsList recurringDebtsList;
-    ConfirmationObserver observer;
+
 
 
     @BeforeEach
@@ -41,7 +41,7 @@ public class NormalUrgentDebtsListTest {
         urgentDebtExceptionTest = new UrgentDebt();
         regularDebtsList.addList(urgentDebtTwo);
         regularDebtsList.save();
-        observer = new ConfirmationObserver();
+
 
 
 
@@ -74,17 +74,6 @@ public class NormalUrgentDebtsListTest {
         assertTrue(list.contains(urgentDebtTwo));
     }
 
-    @Test
-    public void observerTest() {
-        regularDebtsList.addObserver(observer);
-        assertTrue(regularDebtsList.getObservers().contains(observer));
-        regularDebtsList.notifyObservers();
-        regularDebtsList.removeObserver(observer);
-        regularDebtsList.observersPrintStatistics();
-        regularDebtsList.observersAddDebt();
-        regularDebtsList.observersAddDeletedDebt();
-        assertFalse(regularDebtsList.getObservers().contains(observer));
-    }
 
     @Test
     public void testExceptionThrowsIntegerException() {
