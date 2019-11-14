@@ -2,10 +2,15 @@ package ui;
 
 import info.*;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Input {
+public class Input extends JFrame implements ActionListener {
     private NormalUrgentDebtsList normalUrgentDebtsList;
     private RecurringDebtsList recurringDebtsList;
     private Debt debt;
@@ -13,24 +18,46 @@ public class Input {
     private String who;
     private String oweOrOwed;
     private String dueDate;
+    private JLabel label;
+    private JTextField field;
+    private String fieldInput;
+    private Boolean enterClicked;
 
 
-
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         new Input();
 
 
     }
 
-    public Input() throws IOException, ClassNotFoundException {
+    public Input() throws IOException, ClassNotFoundException, InterruptedException {
+        super("Debt Recorder");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(700, 200));
+        ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
+        setLayout(new FlowLayout());
+        label = new JLabel("");
+        field = new JTextField(10);
+        JButton btn = new JButton("Enter");
+        btn.setActionCommand("myButton");
+        btn.addActionListener(this); //sets "this" class as an action listener for btn.
+        add(label);
+        add(field);
+        add(btn);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);  //taken from D11 example
         normalUrgentDebtsList = new NormalUrgentDebtsList();
         recurringDebtsList = new RecurringDebtsList();
         dueDate = "";
+        fieldInput = "";
+        enterClicked = false;
         run();
     }
 
     //EFFECTS: runs a loop that gets user input for data
-    public void run() throws IOException, ClassNotFoundException {
+    public void run() throws IOException, ClassNotFoundException, InterruptedException {
         Scanner input = new Scanner(System.in);
         askLoadOrNew();
         while (true) {
@@ -184,16 +211,23 @@ public class Input {
     }
 
     //EFFECTS: asks user if they want to load a previous list or create a new list, load list if user says load
-    public void askLoadOrNew() throws IOException, ClassNotFoundException {
+    public void askLoadOrNew() throws IOException, ClassNotFoundException, InterruptedException {
         Scanner input = new Scanner(System.in);
-        System.out.println("Would you like to load a previous list or create a new list of debts? "
+        label.setText("Would you like to load a previous list or create a new list of debts? "
                 + "(Type 'Load' or 'New')");
-        String loadOrNew = input.next();
-        if (loadOrNew.equalsIgnoreCase("Load")) {
-            recurringDebtsList.load();
-            normalUrgentDebtsList.load();
-
+//        System.out.println("Would you like to load a previous list or create a new list of debts? "
+//                + "(Type 'Load' or 'New')");
+        //String loadOrNew = input.next();
+        //if (loadOrNew.equalsIgnoreCase("Load")) {
+        while (!enterClicked) {
+            Thread.sleep(100);
+            if (fieldInput.equalsIgnoreCase("Load")) {
+                recurringDebtsList.load();
+                normalUrgentDebtsList.load();
+                System.out.println("this shit worked");
+            }
         }
+        
     }
 
     // REQUIRES: Person
@@ -232,6 +266,19 @@ public class Input {
         for (Debt debt : recurringDebtsList.getListOfDebt()) {
             System.out.println(i + ". " + debt.reminder());
             i = i + 1;
+        }
+    }
+
+//    /**
+//     * Invoked when an action occurs.
+//     *
+//     * @param
+//     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("myButton")) {
+            fieldInput = field.getText();
+            enterClicked = true;
         }
     }
 }
