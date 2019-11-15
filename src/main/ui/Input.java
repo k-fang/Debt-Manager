@@ -19,9 +19,11 @@ public class Input extends JFrame implements ActionListener {
     private String oweOrOwed;
     private String dueDate;
     private JLabel label;
+    private JTextArea labelTwo;
     private JTextField field;
     private String fieldInput;
     private Boolean enterClicked;
+    private String stringList;
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
@@ -37,6 +39,7 @@ public class Input extends JFrame implements ActionListener {
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
         setLayout(new FlowLayout());
         label = new JLabel("");
+        labelTwo = new JTextArea("test");
         field = new JTextField(10);
         JButton btn = new JButton("Enter");
         btn.setActionCommand("myButton");
@@ -44,6 +47,7 @@ public class Input extends JFrame implements ActionListener {
         add(label);
         add(field);
         add(btn);
+        add(labelTwo);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -52,6 +56,7 @@ public class Input extends JFrame implements ActionListener {
         recurringDebtsList = new RecurringDebtsList();
         dueDate = "";
         fieldInput = "";
+        stringList = "";
         enterClicked = false;
         run();
     }
@@ -105,24 +110,31 @@ public class Input extends JFrame implements ActionListener {
     }
 
     //EFFECTS: asks user if they want to view their debts or create or delete a debt
-    private void askViewOrInput() {
+    private void askViewOrInput() throws InterruptedException {
         Scanner input = new Scanner(System.in);
-        System.out.println("Choose to view your Debts or create/delete an entry. (Type 'View', 'Create' or 'Delete')");
-        String answer = input.next();
-        if (answer.equalsIgnoreCase("view")) {
-            System.out.println("Would you like to view your recurring or all your debts? (Type 'Recurring' or 'All')");
-            String answerTwo = input.next();
-            if (answerTwo.equalsIgnoreCase("all") && !normalUrgentDebtsList.getListOfDebt().isEmpty()) {
+        label.setText("Choose to view your Debts or create/delete an entry. (Type 'View', 'Create' or 'Delete')");
+//       System.out.println("Choose to view your Debts or create/delete an entry. (Type 'View', 'Create' or 'Delete')");
+//       String answer = input.next();
+        //if (answer.equalsIgnoreCase("view")) {
+        while (!enterClicked) {
+            Thread.sleep(100);
+            if (fieldInput.equalsIgnoreCase("view")) {
+//           System.out.println("Would you like to view your recurring or all your debts? (Type 'Recurring' or 'All')");
+//            String answerTwo = input.next();
+//            if (answerTwo.equalsIgnoreCase("all") && !normalUrgentDebtsList.getListOfDebt().isEmpty()) {
+//                printRegularList();
+//            } else if (answerTwo.equalsIgnoreCase("recurring") && !recurringDebtsList.getListOfDebt().isEmpty()) {
+//                printRecurringList();
+//            } else if (!answerTwo.equalsIgnoreCase("recurring") && !answerTwo.equalsIgnoreCase("all")) {
+//                wrongInput();
+//            } else {
+//                System.out.println("You have no debts in that category!");
+//            }
+                //NEED TO MAKE ANOTHER FIELD TO DISPLAY THE REGULAR LIST
                 printRegularList();
-            } else if (answerTwo.equalsIgnoreCase("recurring") && !recurringDebtsList.getListOfDebt().isEmpty()) {
-                printRecurringList();
-            } else if (!answerTwo.equalsIgnoreCase("recurring") && !answerTwo.equalsIgnoreCase("all")) {
-                wrongInput();
             } else {
-                System.out.println("You have no debts in that category!");
+                askCreateOrDeleteDebt(fieldInput);
             }
-        } else {
-            askCreateOrDeleteDebt(answer);
         }
     }
 
@@ -227,7 +239,7 @@ public class Input extends JFrame implements ActionListener {
                 System.out.println("this shit worked");
             }
         }
-        
+        enterClicked = false;
     }
 
     // REQUIRES: Person
@@ -255,9 +267,11 @@ public class Input extends JFrame implements ActionListener {
     public void printRegularList() {
         int i = 1;
         for (Debt debt : normalUrgentDebtsList.getListOfDebt()) {
-            System.out.println(i + ". " + debt.reminder());
+           // System.out.println(i + ". " + debt.reminder());
+            stringList = stringList + i + ". " + debt.reminder() + "\n";
             i = i + 1;
         }
+        labelTwo.setText(stringList);
     }
 
     //EFFECTS: prints the list of recurring debts
@@ -274,6 +288,7 @@ public class Input extends JFrame implements ActionListener {
 //     *
 //     * @param
 //     */
+    //EFFECTS: saves the user input in field to a string when the enter button is pressed
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("myButton")) {
