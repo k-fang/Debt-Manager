@@ -79,7 +79,7 @@ public class Input extends JFrame implements ActionListener {
     /////
 
     //EFFECTS: logs the recurring debt to a list of recurring debts, catching exception if parameters error
-    private void logRecurrentResult() {
+    private void logRecurrentResult() throws InterruptedException {
         try {
             recurringDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             recurringDebtsList.addListRe(normalUrgentDebtsList, debt);
@@ -94,7 +94,7 @@ public class Input extends JFrame implements ActionListener {
     }
 
     //EFFECTS: logs a normal or urgent debt to a list of normal/urgent debts catching exceptions if parameters error
-    private void logRegularResult() {
+    private void logRegularResult() throws InterruptedException {
         try {
             normalUrgentDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             normalUrgentDebtsList.addList(debt);
@@ -112,13 +112,15 @@ public class Input extends JFrame implements ActionListener {
     //EFFECTS: asks user if they want to view their debts or create or delete a debt
     private void askViewOrInput() throws InterruptedException {
         Scanner input = new Scanner(System.in);
-        label.setText("Choose to view your Debts or create/delete an entry. (Type 'View', 'Create' or 'Delete')");
+        label.setText("Would you like to create or delete an entry? (Type 'Create' or 'Delete')");
 //       System.out.println("Choose to view your Debts or create/delete an entry. (Type 'View', 'Create' or 'Delete')");
 //       String answer = input.next();
         //if (answer.equalsIgnoreCase("view")) {
         while (!enterClicked) {
-            Thread.sleep(100);
-            if (fieldInput.equalsIgnoreCase("view")) {
+            Thread.sleep(10);
+        }
+        enterClicked = false;
+//            if (fieldInput.equalsIgnoreCase("view")) {
 //           System.out.println("Would you like to view your recurring or all your debts? (Type 'Recurring' or 'All')");
 //            String answerTwo = input.next();
 //            if (answerTwo.equalsIgnoreCase("all") && !normalUrgentDebtsList.getListOfDebt().isEmpty()) {
@@ -131,21 +133,21 @@ public class Input extends JFrame implements ActionListener {
 //                System.out.println("You have no debts in that category!");
 //            }
                 //NEED TO MAKE ANOTHER FIELD TO DISPLAY THE REGULAR LIST
-                printRegularList();
-            } else {
-                askCreateOrDeleteDebt(fieldInput);
-            }
-        }
+//                printRegularList();
+//            } else {
+        askCreateOrDeleteDebt(fieldInput);
+            //}
     }
 
     //EFFECTS: prints wrong input statement
-    private void wrongInput() {
-        System.out.println("You didn't enter a recognized answer!");
+    private String wrongInput() {
+        return "You didn't enter a recognized answer!";
     }
 
     //EFFECTS: asks user if they want to create or delete a debt, if delete asks for the number next to the debt
-    private void askCreateOrDeleteDebt(String answer) {
+    private void askCreateOrDeleteDebt(String answer) throws InterruptedException {
         if (answer.equalsIgnoreCase("create")) {
+            enterClicked = false;
             askDebtType();
         } else if (answer.equalsIgnoreCase("delete")) {
             if (!normalUrgentDebtsList.getListOfDebt().isEmpty()) {
@@ -159,7 +161,7 @@ public class Input extends JFrame implements ActionListener {
                 System.out.println("There are no debts to delete.");
             }
         } else {
-            wrongInput();
+            label.setText(wrongInput());
         }
 
     }
@@ -173,34 +175,49 @@ public class Input extends JFrame implements ActionListener {
     }
 
     //EFFECTS: asks for the debt type the user wants to create
-    private void askDebtType() {
-        Scanner input = new Scanner(System.in);
-        System.out.println("What would you like to do:\n"
-                + "Create an urgent debt (Type 'Urgent')\n"
-                + "Create a regular debt (Type 'Regular')\n"
-                + "Create a recurring debt (Type 'Recurring')\n");
-        String answer = input.next();
-        if (answer.equalsIgnoreCase("Regular")) {
+    private void askDebtType() throws InterruptedException {
+        askDebtTypeString();
+//        System.out.println("What would you like to do:\n"
+//                + "Create an urgent debt (Type 'Urgent')\n"
+//                + "Create a regular debt (Type 'Regular')\n"
+//                + "Create a recurring debt (Type 'Recurring')\n");
+        //String answer = input.next();
+        while (!enterClicked) {
+            Thread.sleep(100);
+        }
+        enterClicked = false;
+        if (fieldInput.equalsIgnoreCase("Regular")) {
             normalDebt();
             logRegularResult();
-        } else if (answer.equalsIgnoreCase("Urgent")) {
+        } else if (fieldInput.equalsIgnoreCase("Urgent")) {
             urgentDebt();
             logRegularResult();
-        } else if (answer.equalsIgnoreCase("Recurring")) {
+        } else if (fieldInput.equalsIgnoreCase("Recurring")) {
             recurringDebt();
             logRecurrentResult();
-
         } else {
-            wrongInput();
+            label.setText(wrongInput());
         }
+
+    }
+
+    private void askDebtTypeString() {
+        label.setText("Would you like to create an urgent, regular, or recurring debt? (Type 'Urgent', 'regular' or "
+                + "'recurring')");
     }
 
     //EFFECTS: creates a recurring debt
-    private void recurringDebt() {
+    private void recurringDebt() throws InterruptedException {
         Scanner input = new Scanner(System.in);
         debt = new RecurringDebt();
-        System.out.println("How often is this debt due? (every '...')");
-        dueDate = input.next();
+        label.setText("How often is this debt due? (every '...')");
+        //System.out.println("How often is this debt due? (every '...')");
+        while (!enterClicked) {
+            Thread.sleep(10);
+        }
+        enterClicked = false;
+        dueDate = fieldInput;
+        //dueDate = input.next();
         debtInput(debt);
     }
 
@@ -213,11 +230,17 @@ public class Input extends JFrame implements ActionListener {
     }
 
     //EFFECTS: creates an urgent debt
-    public void urgentDebt() {
+    public void urgentDebt() throws InterruptedException {
         Scanner input = new Scanner(System.in);
         debt = new UrgentDebt();
-        System.out.println("What is the date this debt is due?");
-        dueDate = input.next();
+        label.setText("What is the date this debt is due?");
+        //System.out.println("What is the date this debt is due?");
+        while (!enterClicked) {
+            Thread.sleep(10);
+        }
+        enterClicked = false;
+        dueDate = fieldInput;
+        //dueDate = input.next();
         debtInput(debt);
 
     }
@@ -236,7 +259,7 @@ public class Input extends JFrame implements ActionListener {
             if (fieldInput.equalsIgnoreCase("Load")) {
                 recurringDebtsList.load();
                 normalUrgentDebtsList.load();
-                System.out.println("this shit worked");
+                printRegularList();
             }
         }
         enterClicked = false;
