@@ -66,6 +66,7 @@ public class Input extends JFrame implements ActionListener {
         Scanner input = new Scanner(System.in);
         askLoadOrNew();
         while (true) {
+            enterClicked = false;
             askViewOrInput();
             printRegularList();
             label.setText("Would you like to continue? (Type Yes or No)");
@@ -162,11 +163,18 @@ public class Input extends JFrame implements ActionListener {
             askDebtType();
         } else if (answer.equalsIgnoreCase("delete")) {
             if (!normalUrgentDebtsList.getListOfDebt().isEmpty()) {
-                Scanner input = new Scanner(System.in);
-                System.out.println("Type the number next to the debt you would like to delete, "
-                        + "or type any other number to cancel.");
-                printRegularList();
-                int ans = input.nextInt();
+                label.setText("Type the number next to the debt you would like to delete, "
+                         + "or type any other number to cancel.");
+                enterClicked = false;
+                while (!enterClicked) {
+                    Thread.sleep(10);
+                }
+                int ans = Integer.parseInt(fieldInput);
+//                Scanner input = new Scanner(System.in);
+//                System.out.println("Type the number next to the debt you would like to delete, "
+//                        + "or type any other number to cancel.");
+//                printRegularList();
+//                int ans = input.nextInt();
                 deleteDebt(ans);
             } else {
                 System.out.println("There are no debts to delete.");
