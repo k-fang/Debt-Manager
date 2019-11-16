@@ -67,14 +67,22 @@ public class Input extends JFrame implements ActionListener {
         askLoadOrNew();
         while (true) {
             askViewOrInput();
-            System.out.println("Would you like to continue? (Type Yes or No)");
-            String done = input.next();
+            printRegularList();
+            label.setText("Would you like to continue? (Type Yes or No)");
+            enterClicked = false;
+            while (!enterClicked) {
+                Thread.sleep(10);
+            }
+            String done = fieldInput;
+            //System.out.println("Would you like to continue? (Type Yes or No)");
+            //String done = input.next();
             if (done.equalsIgnoreCase("No")) {
                 break;
             }
         }
         normalUrgentDebtsList.save();
         recurringDebtsList.save();
+        label.setText("Please close the program to save.");
     }
     /////
 
@@ -111,8 +119,11 @@ public class Input extends JFrame implements ActionListener {
 
     //EFFECTS: asks user if they want to view their debts or create or delete a debt
     private void askViewOrInput() throws InterruptedException {
+
         Scanner input = new Scanner(System.in);
         label.setText("Would you like to create or delete an entry? (Type 'Create' or 'Delete')");
+        Thread.sleep(10);
+        System.out.println("ask view or input");
 //       System.out.println("Choose to view your Debts or create/delete an entry. (Type 'View', 'Create' or 'Delete')");
 //       String answer = input.next();
         //if (answer.equalsIgnoreCase("view")) {
@@ -222,7 +233,7 @@ public class Input extends JFrame implements ActionListener {
     }
 
     //EFFECTS: creates a normal debt
-    public void normalDebt() {
+    public void normalDebt() throws InterruptedException {
         debt = new NormalDebt();
         debtInput(debt);
 
@@ -267,27 +278,65 @@ public class Input extends JFrame implements ActionListener {
 
     // REQUIRES: Person
     // EFFECTS: passes user input into logResult to be logged
-    public void debtInput(Debt person) {
+    public void debtInput(Debt person) throws InterruptedException {
         Scanner input = new Scanner(System.in);
-        System.out.println("Do you owe money or are you owed money? (Type Owe or Owed)");
-        oweOrOwed = input.next();
-        if (oweOrOwed.equalsIgnoreCase("Owed")) {
-            System.out.println("Please enter the amount owed to you (No dollar signs please)");
-            amount = input.nextInt();
-            System.out.println("Who owes you this money?");
-            who = input.next();
-        } else if (oweOrOwed.equalsIgnoreCase("Owe")) {
-            System.out.println("Please enter the amount you owe (No dollar signs please)");
-            amount = input.nextInt();
-            System.out.println("Who do you owe this money to?");
-            who = input.next();
-        } else {
-            wrongInput();
+        label.setText("Do you owe money or are you owed money? (Type Owe or Owed)");
+        //System.out.println("Do you owe money or are you owed money? (Type Owe or Owed)");
+        //oweOrOwed = input.next();
+        enterClicked = false;
+        while (!enterClicked) {
+            Thread.sleep(10);
         }
+        oweOrOwed = fieldInput;
+        enterClicked = false;
+        if (oweOrOwed.equalsIgnoreCase("Owed")) {
+            askOwed();
+        } else if (oweOrOwed.equalsIgnoreCase("Owe")) {
+            askOwe();
+        } else {
+            label.setText(wrongInput());
+        }
+    }
+
+    private void askOwe() throws InterruptedException {
+        label.setText("Please enter the amount you owe (No dollar signs please)");
+        while (!enterClicked) {
+            Thread.sleep(10);
+        }
+        amount = Integer.parseInt(fieldInput);
+        label.setText("Who do you owe this money to?");
+        enterClicked = false;
+        while (!enterClicked) {
+            Thread.sleep(10);
+        }
+        who = fieldInput;
+//        System.out.println("Please enter the amount you owe (No dollar signs please)");
+//        amount = input.nextInt();
+//        System.out.println("Who do you owe this money to?");
+//        who = input.next();
+    }
+
+    private void askOwed() throws InterruptedException {
+        label.setText("Please enter the amount owed to you (No dollar signs please)");
+        while (!enterClicked) {
+            Thread.sleep(10);
+        }
+        amount = Integer.parseInt(fieldInput);
+        label.setText("Who owes you this money?");
+        enterClicked = false;
+        while (!enterClicked) {
+            Thread.sleep(10);
+        }
+        who = fieldInput;
+//        System.out.println("Please enter the amount owed to you (No dollar signs please)");
+//        amount = input.nextInt();
+//        System.out.println("Who owes you this money?");
+//        who = input.next();
     }
 
     //EFFECTS: prints the list of all debts
     public void printRegularList() {
+        stringList = "";
         int i = 1;
         for (Debt debt : normalUrgentDebtsList.getListOfDebt()) {
            // System.out.println(i + ". " + debt.reminder());
