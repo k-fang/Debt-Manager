@@ -1,6 +1,7 @@
 package ui;
 
 import info.*;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -26,6 +27,8 @@ public class Input implements ActionListener {
     private String fieldInput;
     private Boolean enterClicked;
     private String stringList;
+    private Boolean value;
+    private Boolean loop;
 
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
@@ -47,6 +50,8 @@ public class Input implements ActionListener {
         labelTwo = new JTextArea("\n \n");
         field = new JTextField(10);
         JButton btn = new JButton("Enter");
+        JDialog dialog = new JDialog();
+        JLabel dialogLabel = new JLabel();
         btn.setActionCommand("myButton");
         btn.addActionListener(this); //sets "this" class as an action listener for btn.
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -70,6 +75,8 @@ public class Input implements ActionListener {
         fieldInput = "";
         stringList = "";
         enterClicked = false;
+        value = false;
+        loop = false;
         run();
     }
 
@@ -77,27 +84,46 @@ public class Input implements ActionListener {
     public void run() throws IOException, ClassNotFoundException, InterruptedException {
         //Scanner input = new Scanner(System.in);
         askLoadOrNew();
-        while (true) {
-            enterClicked = false;
-            askViewOrInput();
-            printRegularList();
-            label.setText("Would you like to continue? (Type Yes or No)");
-            enterClicked = false;
-            while (!enterClicked) {
-                Thread.sleep(10);
-            }
-            String done = fieldInput;
-            //System.out.println("Would you like to continue? (Type Yes or No)");
-            //String done = input.next();
-            if (done.equalsIgnoreCase("No")) {
-                break;
-            }
-        }
+        afterRun();
         normalUrgentDebtsList.save();
         recurringDebtsList.save();
         label.setText("Please close the program to save.");
     }
-    /////
+
+    private void afterRun() throws InterruptedException {
+        while (!loop) {
+            askViewOrInputCombo();
+            value = false;
+            while (!value) {
+                label.setText("Would you like to continue? (Type 'Yes' or 'No')");
+                enterClicked = false;
+                delayProgram();
+                String done = fieldInput;
+                //System.out.println("Would you like to continue? (Type Yes or No)");
+                //String done = input.next();
+                if (done.equalsIgnoreCase("No")) {
+                    loop = true;
+                    value = true;
+                } else if (!done.equalsIgnoreCase("Yes")) {
+                    wrongInput();
+                } else {
+                    value = true;
+                }
+            }
+        }
+    }
+
+    private void askViewOrInputCombo() throws InterruptedException {
+        askViewOrInput();
+        printRegularList();
+    }
+
+    private void delayProgram() throws InterruptedException {
+        while (!enterClicked) {
+            Thread.sleep(10);
+        }
+    }
+
 
     //EFFECTS: logs the recurring debt to a list of recurring debts, catching exception if parameters error
     private void logRecurrentResult() throws InterruptedException {
@@ -105,11 +131,15 @@ public class Input implements ActionListener {
             recurringDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             recurringDebtsList.addListRe(normalUrgentDebtsList, debt);
         } catch (IntException e) {
-            System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
+            JOptionPane.showMessageDialog(frame,
+                    "You entered a negative or zero amount!\nPlease enter your entry again.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             askDebtType();
         } catch (OweException o) {
-            System.out.println("You did not state whether this person owes or is owed by you!\n"
-                    + "Please enter you entry again.");
+            JOptionPane.showMessageDialog(frame,
+                    "You did not state whether this person owes or is owed by you!\n"
+                            + "Please enter you entry again.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             askDebtType();
         }
     }
@@ -120,12 +150,16 @@ public class Input implements ActionListener {
             normalUrgentDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             normalUrgentDebtsList.addList(debt);
         } catch (IntException e) {
-            System.out.println("You entered a negative or zero amount!\nPlease enter your entry again.");
+            JOptionPane.showMessageDialog(frame,
+                    "You entered a negative or zero amount!\nPlease enter your entry again.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             /*userInput();*/
             askDebtType();
         } catch (OweException o) {
-            System.out.println("You did not state whether this person owes or is owed by you!\n"
-                    + "Please enter you entry again.");
+            JOptionPane.showMessageDialog(frame,
+                    "You did not state whether this person owes or is owed by you!\n"
+                            + "Please enter you entry again.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             askDebtType();
         }
     }
@@ -136,13 +170,11 @@ public class Input implements ActionListener {
         Scanner input = new Scanner(System.in);
         label.setText("Would you like to create or delete an entry? (Type 'Create' or 'Delete')");
         Thread.sleep(10);
-        System.out.println("ask view or input");
+        enterClicked = false;
 //       System.out.println("Choose to view your Debts or create/delete an entry. (Type 'View', 'Create' or 'Delete')");
 //       String answer = input.next();
         //if (answer.equalsIgnoreCase("view")) {
-        while (!enterClicked) {
-            Thread.sleep(10);
-        }
+        delayProgram();
         enterClicked = false;
 //            if (fieldInput.equalsIgnoreCase("view")) {
 //           System.out.println("Would you like to view your recurring or all your debts? (Type 'Recurring' or 'All')");
@@ -156,16 +188,17 @@ public class Input implements ActionListener {
 //            } else {
 //                System.out.println("You have no debts in that category!");
 //            }
-                //NEED TO MAKE ANOTHER FIELD TO DISPLAY THE REGULAR LIST
+        //NEED TO MAKE ANOTHER FIELD TO DISPLAY THE REGULAR LIST
 //                printRegularList();
 //            } else {
         askCreateOrDeleteDebt(fieldInput);
-            //}
+        //}
     }
 
     //EFFECTS: prints wrong input statement
-    private String wrongInput() {
-        return "You didn't enter a recognized answer!";
+    private void wrongInput() {
+        JOptionPane.showMessageDialog(frame, "You didn't enter a recognized answer!",
+                "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     //EFFECTS: asks user if they want to create or delete a debt, if delete asks for the number next to the debt
@@ -176,10 +209,8 @@ public class Input implements ActionListener {
         } else if (answer.equalsIgnoreCase("delete")) {
             if (!normalUrgentDebtsList.getListOfDebt().isEmpty()) {
                 label.setText("Type the number next to the debt you would like to delete, "
-                         + "or type any other number to cancel.");
-                while (!enterClicked) {
-                    Thread.sleep(10);
-                }
+                        + "or type any other number to cancel.");
+                delayProgram();
                 int ans = Integer.parseInt(fieldInput);
 //                Scanner input = new Scanner(System.in);
 //                System.out.println("Type the number next to the debt you would like to delete, "
@@ -188,10 +219,10 @@ public class Input implements ActionListener {
 //                int ans = input.nextInt();
                 deleteDebt(ans);
             } else {
-                System.out.println("There are no debts to delete.");
+                JOptionPane.showMessageDialog(frame, "There are no debts to delete!");
             }
         } else {
-            label.setText(wrongInput());
+            wrongInput();
         }
 
     }
@@ -200,7 +231,7 @@ public class Input implements ActionListener {
     private void deleteDebt(int ans) {
         if (ans > 0 && ans < normalUrgentDebtsList.getListOfDebt().size()) {
             normalUrgentDebtsList.removeList(recurringDebtsList, normalUrgentDebtsList.getSpecificDebt(ans));
-            System.out.println("That debt is paid off!");
+            JOptionPane.showMessageDialog(frame,"That debt is paid off!");
         }
     }
 
@@ -226,7 +257,7 @@ public class Input implements ActionListener {
             recurringDebt();
             logRecurrentResult();
         } else {
-            label.setText(wrongInput());
+            wrongInput();
         }
 
     }
@@ -242,9 +273,7 @@ public class Input implements ActionListener {
         debt = new RecurringDebt();
         label.setText("How often is this debt due? (every '...')");
         //System.out.println("How often is this debt due? (every '...')");
-        while (!enterClicked) {
-            Thread.sleep(10);
-        }
+        delayProgram();
         enterClicked = false;
         dueDate = fieldInput;
         //dueDate = input.next();
@@ -265,9 +294,7 @@ public class Input implements ActionListener {
         debt = new UrgentDebt();
         label.setText("What is the date this debt is due?");
         //System.out.println("What is the date this debt is due?");
-        while (!enterClicked) {
-            Thread.sleep(10);
-        }
+        delayProgram();
         enterClicked = false;
         dueDate = fieldInput;
         //dueDate = input.next();
@@ -277,22 +304,26 @@ public class Input implements ActionListener {
 
     //EFFECTS: asks user if they want to load a previous list or create a new list, load list if user says load
     public void askLoadOrNew() throws IOException, ClassNotFoundException, InterruptedException {
-        Scanner input = new Scanner(System.in);
-        label.setText("Would you like to load a previous list or create a new list of debts? "
-                + "(Type 'Load' or 'New')");
+        boolean value = false;
+        while (!value) {
+            enterClicked = false;
+            label.setText("Would you like to load a previous list or make a new list of debt? (Type 'Load' or 'New')");
 //        System.out.println("Would you like to load a previous list or create a new list of debts? "
 //                + "(Type 'Load' or 'New')");
-        //String loadOrNew = input.next();
-        //if (loadOrNew.equalsIgnoreCase("Load")) {
-        while (!enterClicked) {
-            Thread.sleep(100);
+            //String loadOrNew = input.next();
+            //if (loadOrNew.equalsIgnoreCase("Load")) {
+            delayProgram();
             if (fieldInput.equalsIgnoreCase("Load")) {
                 recurringDebtsList.load();
                 normalUrgentDebtsList.load();
                 printRegularList();
+                value = true;
+            } else if (!fieldInput.equalsIgnoreCase("New")) {
+                wrongInput();
+            } else {
+                value = true;
             }
         }
-        enterClicked = false;
     }
 
     // REQUIRES: Person
@@ -303,9 +334,7 @@ public class Input implements ActionListener {
         //System.out.println("Do you owe money or are you owed money? (Type Owe or Owed)");
         //oweOrOwed = input.next();
         enterClicked = false;
-        while (!enterClicked) {
-            Thread.sleep(10);
-        }
+        delayProgram();
         oweOrOwed = fieldInput;
         enterClicked = false;
         if (oweOrOwed.equalsIgnoreCase("Owed")) {
@@ -313,21 +342,17 @@ public class Input implements ActionListener {
         } else if (oweOrOwed.equalsIgnoreCase("Owe")) {
             askOwe();
         } else {
-            label.setText(wrongInput());
+            wrongInput();
         }
     }
 
     private void askOwe() throws InterruptedException {
         label.setText("Please enter the amount you owe (No dollar signs please)");
-        while (!enterClicked) {
-            Thread.sleep(10);
-        }
+        delayProgram();
         amount = Integer.parseInt(fieldInput);
         label.setText("Who do you owe this money to?");
         enterClicked = false;
-        while (!enterClicked) {
-            Thread.sleep(10);
-        }
+        delayProgram();
         who = fieldInput;
 //        System.out.println("Please enter the amount you owe (No dollar signs please)");
 //        amount = input.nextInt();
@@ -337,15 +362,11 @@ public class Input implements ActionListener {
 
     private void askOwed() throws InterruptedException {
         label.setText("Please enter the amount owed to you (No dollar signs please)");
-        while (!enterClicked) {
-            Thread.sleep(10);
-        }
+        delayProgram();
         amount = Integer.parseInt(fieldInput);
         label.setText("Who owes you this money?");
         enterClicked = false;
-        while (!enterClicked) {
-            Thread.sleep(10);
-        }
+        delayProgram();
         who = fieldInput;
 //        System.out.println("Please enter the amount owed to you (No dollar signs please)");
 //        amount = input.nextInt();
@@ -358,7 +379,7 @@ public class Input implements ActionListener {
         stringList = "";
         int i = 1;
         for (Debt debt : normalUrgentDebtsList.getListOfDebt()) {
-           // System.out.println(i + ". " + debt.reminder());
+            // System.out.println(i + ". " + debt.reminder());
             stringList = stringList + i + ". " + debt.reminder() + "\n";
             i = i + 1;
         }
@@ -374,7 +395,7 @@ public class Input implements ActionListener {
         }
     }
 
-//    /**
+    //    /**
 //     * Invoked when an action occurs.
 //     *
 //     * @param
