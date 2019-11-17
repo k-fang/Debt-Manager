@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Input extends JFrame implements ActionListener {
+public class Input implements ActionListener {
     private NormalUrgentDebtsList normalUrgentDebtsList;
     private RecurringDebtsList recurringDebtsList;
     private Debt debt;
@@ -18,6 +18,8 @@ public class Input extends JFrame implements ActionListener {
     private String who;
     private String oweOrOwed;
     private String dueDate;
+    private JFrame frame;
+    private JPanel jpanel;
     private JLabel label;
     private JTextArea labelTwo;
     private JTextField field;
@@ -33,25 +35,35 @@ public class Input extends JFrame implements ActionListener {
     }
 
     public Input() throws IOException, ClassNotFoundException, InterruptedException {
-        super("Debt Recorder");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(700, 200));
-        ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
-        setLayout(new FlowLayout());
+        frame = new JFrame("Debt Recorder");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(700, 200));
+        ((JPanel) frame.getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
+        jpanel = new JPanel();
+        BoxLayout boxlayout = new BoxLayout(jpanel, BoxLayout.Y_AXIS);
+        jpanel.setLayout(boxlayout);
+        //frame.setLayout(new BorderLayout());
         label = new JLabel("");
-        labelTwo = new JTextArea("test");
+        labelTwo = new JTextArea("\n \n");
         field = new JTextField(10);
         JButton btn = new JButton("Enter");
         btn.setActionCommand("myButton");
         btn.addActionListener(this); //sets "this" class as an action listener for btn.
-        add(label);
-        add(field);
-        add(btn);
-        add(labelTwo);
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-        setResizable(false);  //taken from D11 example
+        field.setAlignmentX(Component.LEFT_ALIGNMENT);
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        btn.setAlignmentX(Component.LEFT_ALIGNMENT);
+        labelTwo.setAlignmentX(Component.LEFT_ALIGNMENT); //taken from:https://examples.javacodegeeks.com/desktop-java/swing/java-swing-boxlayout-example/
+
+        jpanel.add(label, "North");
+        jpanel.add(field, "Center");
+        jpanel.add(btn, "East");
+        jpanel.add(labelTwo, "South");
+        frame.add(jpanel);
+        frame.pack();
+
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.setResizable(false);  //taken from D11 example
         normalUrgentDebtsList = new NormalUrgentDebtsList();
         recurringDebtsList = new RecurringDebtsList();
         dueDate = "";
@@ -63,7 +75,7 @@ public class Input extends JFrame implements ActionListener {
 
     //EFFECTS: runs a loop that gets user input for data
     public void run() throws IOException, ClassNotFoundException, InterruptedException {
-        Scanner input = new Scanner(System.in);
+        //Scanner input = new Scanner(System.in);
         askLoadOrNew();
         while (true) {
             enterClicked = false;
@@ -158,14 +170,13 @@ public class Input extends JFrame implements ActionListener {
 
     //EFFECTS: asks user if they want to create or delete a debt, if delete asks for the number next to the debt
     private void askCreateOrDeleteDebt(String answer) throws InterruptedException {
+        enterClicked = false;
         if (answer.equalsIgnoreCase("create")) {
-            enterClicked = false;
             askDebtType();
         } else if (answer.equalsIgnoreCase("delete")) {
             if (!normalUrgentDebtsList.getListOfDebt().isEmpty()) {
                 label.setText("Type the number next to the debt you would like to delete, "
                          + "or type any other number to cancel.");
-                enterClicked = false;
                 while (!enterClicked) {
                     Thread.sleep(10);
                 }
