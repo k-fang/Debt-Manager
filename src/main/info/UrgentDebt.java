@@ -6,6 +6,7 @@ public class UrgentDebt extends Debt implements Serializable {
 
 
     @Override
+    //EFFECTS: returns a reminder for urgent debts
     public String reminder() {
         if (oweOrOwed.equalsIgnoreCase("Owe")) {
             return "You owe " + who + " " + amount + " dollars by " + dueDate;

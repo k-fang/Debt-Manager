@@ -1,7 +1,6 @@
 package ui;
 
 import info.*;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -57,7 +56,7 @@ public class Input implements ActionListener {
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
         btn.setAlignmentX(Component.LEFT_ALIGNMENT);
         labelTwo.setAlignmentX(Component.LEFT_ALIGNMENT); //taken from:https://examples.javacodegeeks.com/desktop-java/swing/java-swing-boxlayout-example/
-
+        labelTwo.setEditable(false);
         jpanel.add(label, "North");
         jpanel.add(field, "Center");
         jpanel.add(btn, "East");
@@ -79,7 +78,7 @@ public class Input implements ActionListener {
         run();
     }
 
-    //EFFECTS: runs a loop that gets user input for data
+    //EFFECTS: calls down the structure of the program, once everything is done saves
     public void run() throws IOException, ClassNotFoundException, InterruptedException {
         askLoadOrNew();
         afterRun();
@@ -88,9 +87,11 @@ public class Input implements ActionListener {
         label.setText("Please close the program to save.");
     }
 
+    //MODIFIES: this
+    //EFFECTS: runs a loop that gets user input for data
     private void afterRun() throws InterruptedException {
         while (!loop) {
-            askViewOrInputCombo();
+            askInputPrint();
             value = false;
             while (!value) {
                 label.setText("Would you like to continue? (Type 'Yes' or 'No')");
@@ -109,11 +110,13 @@ public class Input implements ActionListener {
         }
     }
 
-    private void askViewOrInputCombo() throws InterruptedException {
-        askViewOrInput();
+    //EFFECTS: calls method to ask the what the  user wants to do, prints current list of debts
+    private void askInputPrint() throws InterruptedException {
+        askInput();
         printRegularList();
     }
 
+    //EFFECTS: delays program by 10 miliseconds so the while loops work
     private void delayProgram() throws InterruptedException {
         while (!enterClicked) {
             Thread.sleep(10);
@@ -159,8 +162,9 @@ public class Input implements ActionListener {
         }
     }
 
+    //MODIFIES: this
     //EFFECTS: asks user if they want to view their debts or create or delete a debt
-    private void askViewOrInput() throws InterruptedException {
+    private void askInput() throws InterruptedException {
         label.setText("Would you like to create or delete an entry? (Type 'Create' or 'Delete')");
         Thread.sleep(10);
         enterClicked = false;
@@ -176,6 +180,7 @@ public class Input implements ActionListener {
                 "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    //MODIFIES: this
     //EFFECTS: asks user if they want to create or delete a debt, if delete asks for the number next to the debt
     private void askCreateOrDeleteDebt(String answer) throws InterruptedException {
         enterClicked = false;
@@ -205,6 +210,7 @@ public class Input implements ActionListener {
         }
     }
 
+    //MODIFIES: this
     //EFFECTS: asks for the debt type the user wants to create
     private void askDebtType() throws InterruptedException {
         askDebtTypeString();
@@ -227,11 +233,13 @@ public class Input implements ActionListener {
 
     }
 
+    //EFFECTS: helper function to ask user question
     private void askDebtTypeString() {
         label.setText("Would you like to create an urgent, regular, or recurring debt? (Type 'Urgent', 'regular' or "
                 + "'recurring')");
     }
 
+    //MODIFIES: this
     //EFFECTS: creates a recurring debt
     private void recurringDebt() throws InterruptedException {
         debt = new RecurringDebt();
@@ -239,17 +247,16 @@ public class Input implements ActionListener {
         delayProgram();
         enterClicked = false;
         dueDate = fieldInput;
-        debtInput(debt);
+        debtInput();
     }
 
     //EFFECTS: creates a normal debt
     public void normalDebt() throws InterruptedException {
         debt = new NormalDebt();
-        debtInput(debt);
-
-
+        debtInput();
     }
 
+    //MODIFIES: this
     //EFFECTS: creates an urgent debt
     public void urgentDebt() throws InterruptedException {
         debt = new UrgentDebt();
@@ -257,10 +264,11 @@ public class Input implements ActionListener {
         delayProgram();
         enterClicked = false;
         dueDate = fieldInput;
-        debtInput(debt);
+        debtInput();
 
     }
 
+    //MODIFIES: this
     //EFFECTS: asks user if they want to load a previous list or create a new list, load list if user says load
     public void askLoadOrNew() throws IOException, ClassNotFoundException, InterruptedException {
         boolean value = false;
@@ -281,10 +289,9 @@ public class Input implements ActionListener {
         }
     }
 
-    // REQUIRES: Person
+    // MODIFIES: this
     // EFFECTS: passes user input into logResult to be logged
-    public void debtInput(Debt person) throws InterruptedException {
-        Scanner input = new Scanner(System.in);
+    public void debtInput() throws InterruptedException {
         label.setText("Do you owe money or are you owed money? (Type Owe or Owed)");
         enterClicked = false;
         delayProgram();
@@ -298,6 +305,7 @@ public class Input implements ActionListener {
             wrongInput();
         }
     }
+
 
     private void askOwe() throws InterruptedException {
         label.setText("Please enter the amount you owe (No dollar signs please)");

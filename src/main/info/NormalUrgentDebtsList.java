@@ -8,6 +8,7 @@ public class NormalUrgentDebtsList extends DebtsList {
 
     public NormalUrgentDebtsList() {
         listOfDebt = new ArrayList<>();
+
     }
 
     // REQUIRES: Debt
