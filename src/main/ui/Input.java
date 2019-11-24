@@ -18,11 +18,14 @@ public class Input implements ActionListener {
     private String who;
     private String oweOrOwed;
     private String dueDate;
+    private LoadingScreen loadingScreen;
     private JFrame frame;
     private JPanel jpanel;
     private JLabel label;
     private JTextArea labelTwo;
     private JTextField field;
+    private ImageIcon checkMarkImage;
+    private JLabel imageLabel;
     private String fieldInput;
     private Boolean enterClicked;
     private String stringList;
@@ -37,15 +40,23 @@ public class Input implements ActionListener {
     }
 
     public Input() throws IOException, ClassNotFoundException, InterruptedException {
-        frame = new JFrame("Debt Recorder");
+        frame = new JFrame("Debt Manager");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(700, 200));
+        frame.setPreferredSize(new Dimension(750, 210));
         ((JPanel) frame.getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
         jpanel = new JPanel();
         BoxLayout boxlayout = new BoxLayout(jpanel, BoxLayout.Y_AXIS);
         jpanel.setLayout(boxlayout);
-
+        checkMarkImage = new ImageIcon(System.getProperty("user.dir") + System.getProperty("file.separator")
+                + "data" + System.getProperty("file.separator") + "checkmark.jpg");
+        Image image = checkMarkImage.getImage();
+        Image newImg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
+        checkMarkImage = new ImageIcon(newImg); // taken from : https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
+        imageLabel = new JLabel("That debt has been paid off!", checkMarkImage, JLabel.CENTER);
+        imageLabel.setHorizontalTextPosition(JLabel.CENTER); //taken from http://esus.com/creating-a-jlabel-with-the-text-on-top-of-the-image/
+        imageLabel.setVerticalTextPosition(JLabel.BOTTOM);
         label = new JLabel("");
+        label.setFont(new Font("Serif", Font.BOLD, 15));
         labelTwo = new JTextArea("\n \n");
         field = new JTextField(10);
         JButton btn = new JButton("Enter");
@@ -63,8 +74,8 @@ public class Input implements ActionListener {
         jpanel.add(labelTwo, "South");
         frame.add(jpanel);
         frame.pack();
-
         frame.setLocationRelativeTo(null);
+        loadingScreen = new LoadingScreen();
         frame.setVisible(true);
         frame.setResizable(false);  //taken from D11 example
         normalUrgentDebtsList = new NormalUrgentDebtsList();
@@ -206,7 +217,13 @@ public class Input implements ActionListener {
     private void deleteDebt(int ans) {
         if (ans > 0 && ans < normalUrgentDebtsList.getListOfDebt().size()) {
             normalUrgentDebtsList.removeList(recurringDebtsList, normalUrgentDebtsList.getSpecificDebt(ans));
-            JOptionPane.showMessageDialog(frame,"That debt is paid off!");
+            JDialog d = new JDialog(frame);
+            d.add(imageLabel);
+            d.setSize(120,130);
+            d.pack();
+            d.setLocationRelativeTo(frame);
+            d.setVisible(true);
+            //JOptionPane.showMessageDialog(frame,"That debt is paid off!");
         }
     }
 
@@ -337,6 +354,8 @@ public class Input implements ActionListener {
         }
         labelTwo.setText(stringList);
     }
+
+
 
     //    /**
 //     * Invoked when an action occurs.
