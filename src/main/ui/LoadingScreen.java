@@ -1,7 +1,9 @@
 package ui;
 
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 
 public class LoadingScreen {
     private JFrame frame;
@@ -9,6 +11,9 @@ public class LoadingScreen {
     private ImageIcon imageIcon;
 
     public LoadingScreen() throws InterruptedException {
+        final Runnable runnable =
+                (Runnable) Toolkit.getDefaultToolkit().getDesktopProperty("win.sound.hand");
+
         frame = new JFrame("Debt Manager");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -24,8 +29,11 @@ public class LoadingScreen {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        runnable.run();
         Thread.sleep(2500);
         frame.setVisible(false);
         frame.setResizable(false);  //taken from D11 example
     }
+
+
 }
