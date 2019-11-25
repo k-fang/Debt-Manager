@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class Input implements ActionListener {
     private NormalUrgentDebtsList normalUrgentDebtsList;
@@ -24,8 +23,14 @@ public class Input implements ActionListener {
     private JLabel label;
     private JTextArea labelTwo;
     private JTextField field;
+    private ImageIcon penImage;
+    private JLabel penLabel;
     private ImageIcon checkMarkImage;
     private JLabel imageLabel;
+    private JMenuBar menuBar;
+    private JMenu menu;
+    private JMenuItem m1;
+    private JMenuItem m2;
     private String fieldInput;
     private Boolean enterClicked;
     private String stringList;
@@ -42,25 +47,44 @@ public class Input implements ActionListener {
     public Input() throws IOException, ClassNotFoundException, InterruptedException {
         frame = new JFrame("Debt Manager");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(750, 210));
+        frame.setPreferredSize(new Dimension(750, 250));
         ((JPanel) frame.getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
         jpanel = new JPanel();
         BoxLayout boxlayout = new BoxLayout(jpanel, BoxLayout.Y_AXIS);
         jpanel.setLayout(boxlayout);
+        penImage = new ImageIcon(System.getProperty("user.dir") + System.getProperty("file.separator")
+                + "data" + System.getProperty("file.separator") + "recorded.jpg");
+        Image image = penImage.getImage();
+        Image newImg = image.getScaledInstance(110, 120, java.awt.Image.SCALE_SMOOTH);
+        penImage = new ImageIcon(newImg);
+        penLabel = new JLabel("That debt has been recorded!", penImage, JLabel.CENTER);
+        penLabel.setHorizontalTextPosition(JLabel.CENTER);
+        penLabel.setVerticalTextPosition(JLabel.BOTTOM);
         checkMarkImage = new ImageIcon(System.getProperty("user.dir") + System.getProperty("file.separator")
-                + "data" + System.getProperty("file.separator") + "checkmark.jpg");
-        Image image = checkMarkImage.getImage();
-        Image newImg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
-        checkMarkImage = new ImageIcon(newImg); // taken from : https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
-        imageLabel = new JLabel("That debt has been paid off!", checkMarkImage, JLabel.CENTER);
+                + "data" + System.getProperty("file.separator") + "checkmark.jpg"); //https://thumbs.dreamstime.com/b/book-writing-icon-vector-graphics-beautiful-meticulously-designed-158308523.jpg
+        Image image2 = checkMarkImage.getImage();
+        Image newImg2 = image2.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH);
+        checkMarkImage = new ImageIcon(newImg2); // taken from : https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
+        imageLabel = new JLabel("That debt has been paid off!", checkMarkImage, JLabel.CENTER); //image from :https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiO2JqFg4bmAhVWrp4KHTd4DacQjRx6BAgBEAQ&url=https%3A%2F%2Fwww.istockphoto.com%2Fvector%2Fgreen-check-mark-icon-isolated-on-white-background-gm1154725792-314104265&psig=AOvVaw2j6xNWYBTvucpTKATuRZjf&ust=1574794019772960
         imageLabel.setHorizontalTextPosition(JLabel.CENTER); //taken from http://esus.com/creating-a-jlabel-with-the-text-on-top-of-the-image/
         imageLabel.setVerticalTextPosition(JLabel.BOTTOM);
         label = new JLabel("");
         label.setFont(new Font("Serif", Font.BOLD, 15));
-        labelTwo = new JTextArea("\n \n");
+        labelTwo = new JTextArea(" \n \n \n ");
+        //JScrollBar scroller = new JScrollBar(JScrollBar.VERTICAL);
         field = new JTextField(10);
+        field.setMaximumSize(new Dimension(Integer.MAX_VALUE, field.getMinimumSize().height));
         JButton btn = new JButton("Enter");
-
+        menuBar = new JMenuBar();
+        menu = new JMenu("Menu");
+        m1 = new JMenuItem("New");
+        m2 = new JMenuItem("Save");
+        m1.addActionListener(this);
+        m2.addActionListener(this);
+        menu.add(m1);
+        menu.add(m2);
+        menuBar.add(menu);
+        frame.setJMenuBar(menuBar);
         btn.setActionCommand("myButton");
         btn.addActionListener(this); //sets "this" class as an action listener for btn.
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -72,6 +96,7 @@ public class Input implements ActionListener {
         jpanel.add(field, "Center");
         jpanel.add(btn, "East");
         jpanel.add(labelTwo, "South");
+        //jpanel.add(scroller);
         frame.add(jpanel);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -86,16 +111,21 @@ public class Input implements ActionListener {
         enterClicked = false;
         value = false;
         loop = false;
+        recurringDebtsList.load();
+        normalUrgentDebtsList.load();
+
         run();
     }
 
+
     //EFFECTS: calls down the structure of the program, once everything is done saves
     public void run() throws IOException, ClassNotFoundException, InterruptedException {
-        askLoadOrNew();
+        //askLoadOrNew();
+        printRegularList();
         afterRun();
-        normalUrgentDebtsList.save();
-        recurringDebtsList.save();
-        label.setText("Please close the program to save.");
+//        normalUrgentDebtsList.save();
+//        recurringDebtsList.save();
+        label.setText("Please close the program. (Remember to save!)");
     }
 
     //MODIFIES: this
@@ -140,6 +170,7 @@ public class Input implements ActionListener {
         try {
             recurringDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             recurringDebtsList.addListRe(normalUrgentDebtsList, debt);
+            penImagePopup();
         } catch (IntException e) {
             JOptionPane.showMessageDialog(frame,
                     "You entered a negative or zero amount!\nPlease enter your entry again.",
@@ -159,6 +190,7 @@ public class Input implements ActionListener {
         try {
             normalUrgentDebtsList.logResult(debt, amount, oweOrOwed, who, dueDate);
             normalUrgentDebtsList.addList(debt);
+            penImagePopup();
         } catch (IntException e) {
             JOptionPane.showMessageDialog(frame,
                     "You entered a negative or zero amount!\nPlease enter your entry again.",
@@ -214,8 +246,8 @@ public class Input implements ActionListener {
     }
 
     //EFFECTS: deletes the selected debt if user input is a registered debt
-    private void deleteDebt(int ans) {
-        if (ans > 0 && ans < normalUrgentDebtsList.getListOfDebt().size()) {
+    private void deleteDebt(int ans) throws InterruptedException {
+        if (ans > 0 && ans <= normalUrgentDebtsList.getListOfDebt().size()) {
             normalUrgentDebtsList.removeList(recurringDebtsList, normalUrgentDebtsList.getSpecificDebt(ans));
             JDialog d = new JDialog(frame);
             d.add(imageLabel);
@@ -223,6 +255,8 @@ public class Input implements ActionListener {
             d.pack();
             d.setLocationRelativeTo(frame);
             d.setVisible(true);
+            Thread.sleep(1500);
+            d.setVisible(false);
             //JOptionPane.showMessageDialog(frame,"That debt is paid off!");
         }
     }
@@ -285,26 +319,26 @@ public class Input implements ActionListener {
 
     }
 
-    //MODIFIES: this
-    //EFFECTS: asks user if they want to load a previous list or create a new list, load list if user says load
-    public void askLoadOrNew() throws IOException, ClassNotFoundException, InterruptedException {
-        boolean value = false;
-        while (!value) {
-            enterClicked = false;
-            label.setText("Would you like to load a previous list or make a new list of debt? (Type 'Load' or 'New')");
-            delayProgram();
-            if (fieldInput.equalsIgnoreCase("Load")) {
-                recurringDebtsList.load();
-                normalUrgentDebtsList.load();
-                printRegularList();
-                value = true;
-            } else if (!fieldInput.equalsIgnoreCase("New")) {
-                wrongInput();
-            } else {
-                value = true;
-            }
-        }
-    }
+//    //MODIFIES: this
+//    //EFFECTS: asks user if they want to load a previous list or create a new list, load list if user says load
+//    public void askLoadOrNew() throws IOException, ClassNotFoundException, InterruptedException {
+//        boolean value = false;
+//        while (!value) {
+//            enterClicked = false;
+//           label.setText("Would you like to load a previous list or make a new list of debt? (Type 'Load' or 'New')");
+//            delayProgram();
+//            if (fieldInput.equalsIgnoreCase("Load")) {
+//                recurringDebtsList.load();
+//                normalUrgentDebtsList.load();
+//                printRegularList();
+//                value = true;
+//            } else if (!fieldInput.equalsIgnoreCase("New")) {
+//                wrongInput();
+//            } else {
+//                value = true;
+//            }
+//        }
+//    }
 
     // MODIFIES: this
     // EFFECTS: passes user input into logResult to be logged
@@ -355,6 +389,16 @@ public class Input implements ActionListener {
         labelTwo.setText(stringList);
     }
 
+    private void penImagePopup() throws InterruptedException {
+        JDialog d = new JDialog(frame);
+        d.add(penLabel);
+        d.setSize(120,130);
+        d.pack();
+        d.setLocationRelativeTo(frame);
+        d.setVisible(true);
+        Thread.sleep(1500);
+        d.setVisible(false);
+    }
 
 
     //    /**
@@ -369,6 +413,25 @@ public class Input implements ActionListener {
             fieldInput = field.getText();
             field.setText("");
             enterClicked = true;
+        } else if (e.getActionCommand().equalsIgnoreCase("Save")) {
+            try {
+                saveLists();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        } else if (e.getActionCommand().equalsIgnoreCase("New")) {
+            clearLists();
         }
+    }
+
+    private void saveLists() throws IOException {
+        normalUrgentDebtsList.save();
+        recurringDebtsList.save();
+    }
+
+    private void clearLists() {
+        normalUrgentDebtsList.clearList();
+        recurringDebtsList.clearList();
+        printRegularList();
     }
 }

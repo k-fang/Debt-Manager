@@ -11,6 +11,12 @@ public class NormalUrgentDebtsList extends DebtsList {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: clears entire listOfDebt
+    public void clearList() {
+        listOfDebt.removeAll(listOfDebt);
+    }
+
     // REQUIRES: Debt
     // MODIFIES: this
     // EFFECTS: adds a new debt to listOfDebt

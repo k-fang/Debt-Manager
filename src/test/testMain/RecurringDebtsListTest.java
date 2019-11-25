@@ -116,7 +116,8 @@ public class RecurringDebtsListTest {
         assertEquals(2, listOfDebt.size());
         assertTrue(listOfDebt.contains(checkRecurringDebt));
         assertTrue(firstPersonName.equals("Bob"));
-
+        recurringDebtsList.clearList();
+        assertEquals(0, listOfDebt.size());
 
     }
 }

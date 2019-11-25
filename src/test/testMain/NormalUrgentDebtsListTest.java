@@ -132,5 +132,7 @@ public class NormalUrgentDebtsListTest {
         assertEquals(4, listOfDebt.size());
         assertTrue(listOfDebt.contains(normalDebt));
         assertTrue(firstPersonName.equals("Joe"));
+        regularDebtsList.clearList();
+        assertEquals(0, listOfDebt.size());
     }
 }

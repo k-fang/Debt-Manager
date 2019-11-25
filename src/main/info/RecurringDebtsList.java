@@ -10,6 +10,12 @@ public class RecurringDebtsList extends DebtsList {
         listOfRecurringDebt = new ArrayList<>();
     }
 
+    // MODIFIES: this
+    // EFFECTS: clears entire listOfRecurringDebt
+    public void clearList() {
+        listOfRecurringDebt.removeAll(listOfRecurringDebt);
+    }
+
 
     // REQUIRES: Debt
     // MODIFIES: this
