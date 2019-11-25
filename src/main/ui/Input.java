@@ -47,7 +47,7 @@ public class Input implements ActionListener {
     public Input() throws IOException, ClassNotFoundException, InterruptedException {
         frame = new JFrame("Debt Manager");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(750, 250));
+        frame.setPreferredSize(new Dimension(750, 230));
         ((JPanel) frame.getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
         jpanel = new JPanel();
         BoxLayout boxlayout = new BoxLayout(jpanel, BoxLayout.Y_AXIS);
@@ -71,7 +71,7 @@ public class Input implements ActionListener {
         label = new JLabel("");
         label.setFont(new Font("Serif", Font.BOLD, 15));
         labelTwo = new JTextArea(" \n \n \n ");
-        //JScrollBar scroller = new JScrollBar(JScrollBar.VERTICAL);
+        JScrollPane scroller = new JScrollPane(labelTwo);
         field = new JTextField(10);
         field.setMaximumSize(new Dimension(Integer.MAX_VALUE, field.getMinimumSize().height));
         JButton btn = new JButton("Enter");
@@ -90,13 +90,13 @@ public class Input implements ActionListener {
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
         btn.setAlignmentX(Component.LEFT_ALIGNMENT);
-        labelTwo.setAlignmentX(Component.LEFT_ALIGNMENT); //taken from:https://examples.javacodegeeks.com/desktop-java/swing/java-swing-boxlayout-example/
+        scroller.setAlignmentX(Component.LEFT_ALIGNMENT); //taken from:https://examples.javacodegeeks.com/desktop-java/swing/java-swing-boxlayout-example/
         labelTwo.setEditable(false);
         jpanel.add(label, "North");
         jpanel.add(field, "Center");
         jpanel.add(btn, "East");
-        jpanel.add(labelTwo, "South");
-        //jpanel.add(scroller);
+        //jpanel.add(labelTwo, "South");
+        jpanel.add(scroller);
         frame.add(jpanel);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -286,8 +286,8 @@ public class Input implements ActionListener {
 
     //EFFECTS: helper function to ask user question
     private void askDebtTypeString() {
-        label.setText("Would you like to create an urgent, regular, or recurring debt? (Type 'Urgent', 'regular' or "
-                + "'recurring')");
+        label.setText("Would you like to create an urgent, regular, or recurring debt? (Type 'Urgent', 'Regular' or "
+                + "'Recurring')");
     }
 
     //MODIFIES: this
@@ -343,7 +343,7 @@ public class Input implements ActionListener {
     // MODIFIES: this
     // EFFECTS: passes user input into logResult to be logged
     public void debtInput() throws InterruptedException {
-        label.setText("Do you owe money or are you owed money? (Type Owe or Owed)");
+        label.setText("Do you owe money or are you owed money? (Type 'Owe' or 'Owed')");
         enterClicked = false;
         delayProgram();
         oweOrOwed = fieldInput;
@@ -359,7 +359,7 @@ public class Input implements ActionListener {
 
 
     private void askOwe() throws InterruptedException {
-        label.setText("Please enter the amount you owe (No dollar signs please)");
+        label.setText("Please enter the amount you owe. (No dollar signs please)");
         delayProgram();
         amount = Integer.parseInt(fieldInput);
         label.setText("Who do you owe this money to?");
@@ -369,7 +369,7 @@ public class Input implements ActionListener {
     }
 
     private void askOwed() throws InterruptedException {
-        label.setText("Please enter the amount owed to you (No dollar signs please)");
+        label.setText("Please enter the amount owed to you. (No dollar signs please)");
         delayProgram();
         amount = Integer.parseInt(fieldInput);
         label.setText("Who owes you this money?");
@@ -396,7 +396,7 @@ public class Input implements ActionListener {
         d.pack();
         d.setLocationRelativeTo(frame);
         d.setVisible(true);
-        Thread.sleep(1500);
+        Thread.sleep(1300);
         d.setVisible(false);
     }
 
