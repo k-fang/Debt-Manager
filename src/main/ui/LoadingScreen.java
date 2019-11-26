@@ -35,5 +35,8 @@ public class LoadingScreen {
         frame.setResizable(false);  //taken from D11 example
     }
 
+    public ImageIcon getImageIcon() {
+        return imageIcon;
+    }
 
 }

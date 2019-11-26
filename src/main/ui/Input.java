@@ -101,6 +101,7 @@ public class Input implements ActionListener {
         frame.pack();
         frame.setLocationRelativeTo(null);
         loadingScreen = new LoadingScreen();
+        frame.setIconImage(loadingScreen.getImageIcon().getImage());
         frame.setVisible(true);
         frame.setResizable(false);  //taken from D11 example
         normalUrgentDebtsList = new NormalUrgentDebtsList();
