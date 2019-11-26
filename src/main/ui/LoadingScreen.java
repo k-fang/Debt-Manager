@@ -27,6 +27,7 @@ public class LoadingScreen {
         label = new JLabel(imageIcon);
         frame.add(label);
         frame.pack();
+        frame.setIconImage(imageIcon.getImage());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         runnable.run();
