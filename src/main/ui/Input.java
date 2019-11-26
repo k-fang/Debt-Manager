@@ -411,9 +411,11 @@ public class Input implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("myButton")) {
-            fieldInput = field.getText();
-            field.setText("");
-            enterClicked = true;
+            if (!field.getText().isEmpty()) {
+                fieldInput = field.getText();
+                field.setText("");
+                enterClicked = true;
+            }
         } else if (e.getActionCommand().equalsIgnoreCase("Save")) {
             try {
                 saveLists();
