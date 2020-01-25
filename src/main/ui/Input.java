@@ -112,8 +112,11 @@ public class Input implements ActionListener {
         enterClicked = false;
         value = false;
         loop = false;
+        try { 
         recurringDebtsList.load();
         normalUrgentDebtsList.load();
+        } catch (FileNotFoundException e) {
+        }
 
         run();
     }
